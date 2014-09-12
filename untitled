@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Jumbo Savings: Your Data</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="chart.js"></script>
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <link href="pages.css" rel="stylesheet">
+    <link href="bootstrap.css" rel="stylesheet">
+    <style>
+            body {
+                background-color: #DEEFFF;
+            }
+            #title {
+                text-align: left;
+            }
+            #block {
+                border-style: solid;
+                border-width: 1px;
+                border-color: white;
+                border-radius: 25px;
+                background: #EFF7FF;
+                font-family: "Lucida Sans Unicode";
+                width: 400px;
+                height: 360px;
+                padding-left: 10px;
+                float: left;
+                margin: 15px;
+                padding-right: 20px;
+            }
+            h1 {
+                text-align: center;
+                font-size: 25px;
+            }
+            p {
+                padding-left: 15px;
+            }
+            #legend {
+                float: right;
+                padding-right: 25px;
+            }
+            #map_canvas {
+                margin-left: 10px;
+                width: 360px;
+                height: 270px;
+            }
+        </style>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="cover">Jumbo Savings</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="cover">Home</a></li>
+                    <li><a href="about">About</a></li>
+                    <li><a href="contact">Contact</a></li>
+                    <li><div>
+                    <!--for default text, insert variable for "data-text"-->
+                    <p><%= username=></p>
+                    <a href="https://twitter.com/share" class="twitter-share-button" data-lang="en" data-text="I LOVE JUMBO SAVINGS">Tweet</a>
+                     <script>!function(d,s,id){
+                        var js,fjs=d.getElementsByTagName(s)[0];
+                        if(!d.getElementById(id)){
+                            js=d.createElement(s);
+                            js.id=id;
+                            js.src="https://platform.twitter.com/widgets.js";
+                            fjs.parentNode.insertBefore(js,fjs);
+                        }
+                    }(document,"script","twitter-wjs");</script>
+                        </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <br><br>
+    <h1>Your Data</h1>
+    <div id="content">
+        <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+            <li class="active"><a href="#dining" data-toggle="tab">Dining</a></li>
+            <li><a href="#printing" data-toggle="tab">Printing</a></li>
+        </ul>
+        <div id="my-tab-content" class="tab-content">
+            <div class="tab-pane active" id="dining">
+                <div id='block'>
+                    <h1>Am I using my meal Plan effciently?</h1>
+                        <div id = "message">When we have real data, this will be the output message. </div>
+                </div>
+                <div id='block'>
+                    <h1>What is the "value" of the meals I eat in the Dining Halls?</h1>
+                         <div id = "message1">When we have real data, this will be suggestions, etc. </div>
+                </div>
+                <div id='block'>
+                    <h1>Dining by Location</h1>
+                    <canvas id="eat_pie" height="160" width="160">
+                    <div id="dlegend">
+                        <p><canvas id="dlegend1" height="15" width="30"></canvas>&nbsp&nbspDewick<br>
+                        <canvas id="dlegend2" height="15" width="30"></canvas>&nbsp&nbspCarmichael<br>
+                        <canvas id="dlegend3" height="15" width="30"></canvas>&nbsp&nbspHodgdon<br>
+                        <canvas id="dlegend4" height="15" width="30"></canvas>&nbsp&nbspBrown and Brew<br>
+                        <canvas id="dlegend5" height="15" width="30"></canvas>&nbsp&nbspTower Cafe<br>
+                        <canvas id="dlegend6" height="15" width="30"></canvas>&nbsp&nbspMugar Cafe<br>
+                        <canvas id="dlegend7" height="15" width="30"></canvas>&nbsp&nbspCampus Center</p>
+                    </div>
+                    </canvas>
+                </div>
+                <div id='block'>
+                    <h1>Dining by Month</h1>
+                    <canvas id="eat_bar" height="250" width="380"></canvas>
+                </div>
+                <div id='block'>
+                    <h1>Locations to Eat</h1>
+                    <div id="eat_canvas">
+                    </div>
+                </div>
+                <div id='block'>
+                    <h1>Compare meal plans by price</h1>
+                    <table>
+                        <tr>
+                            <th>Meal plan&nbsp&nbsp&nbsp&nbsp</th>
+                            <th>Total price&nbsp&nbsp&nbsp&nbsp</th>
+                            <th>Price per meal&nbsp&nbsp&nbsp&nbsp</th>
+                        </tr>
+                        <tr>
+                            <td>Unlimited</td>
+                            <td>$2879</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td>220</td>
+                            <td>$2636</td>
+                            <td>$11.98</td>
+                        </tr>
+                        <tr>
+                            <td>160</td>
+                            <td>$1916</td>
+                            <td>$11.98</td>
+                        </tr>
+                        <tr>
+                            <td>100</td>
+                            <td>$1240</td>
+                            <td>$12.40</td>
+                        </tr>
+                        <tr>
+                            <td>80</td>
+                            <td>$1004</td>
+                            <td>$12.55</td>
+                        </tr>
+                        <tr>
+                            <td>40</td>
+                            <td>$500</td>
+                            <td>$12.50</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane" id="printing">
+                <div id='block'>
+                    <h1>Should I buy a printer?</h1>
+                    <div id = "message2">When we have real data, this will be the output message. </div>
+                    </div>
+                <div id='block'>
+                    <h1>What are my printing habits and what can I do to be more cost efficient?</h1>
+                    <div id = "message3">When we have real data, this will be the output message. </div>
+                </div>
+                <div id='block'>
+                    <h1>Printing by Location</h1>
+                    <canvas id="print_pie" height="240" width="240"></canvas>
+                    <div id="plegend">
+                        <p><canvas id="plegend1" height="15" width="30"></canvas>&nbsp&nbspTisch<br>
+                        <canvas id="plegend2" height="15" width="30"></canvas>&nbsp&nbspGinn<br>
+                        <canvas id="plegend3" height="15" width="30"></canvas>&nbsp&nbspEaton</p>
+                    </div>
+                </div>
+                <div id='block'>
+                    <h1>Printing by Month</h1>
+                    <canvas id="print_bar" height="250" width="380"></canvas>
+                </div>
+                <div id='block'>
+                    <h1>Locations to Print</h1>
+                    <div id="print_canvas">
+                    </div>
+                </div>
+                <div id='block'>
+                    <h1>Places to buy affordable printers</h1>
+                    <p><a href="http://www.amazon.com">Amazon</a></br>
+                    <a href="https://shopping.yahoo.com">Yahoo! Shopping</a></br>
+                    <a href="http://www.ebay.com/">Ebay</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br style="clear:both" />
+    <footer>
+        <p>&copy; <a href="cover">Home</a> | <a href="about">About Us</a> | <a href="faq">FAQ</a> | <a href="contact">Contact</a> | Jumbo Savings 2014</p>
+    </footer>
+    <script type="text/javascript">
+        $('#tabs a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        })
+    </script>    
+<script> 
+
+JSONdata = [{"Date":"11d04d14 17:55","Description":"Ginn Library Printers","Amount":"-0.1","Balance":"53.44"},
+{"Date":"11d05d14 11:52","Description":"Commons Deli & Grill POS","Amount":"-3.89","Balance":"49.55"},
+{"Date":"11d06d14 10:27","Description":"Mugar Cafe POS","Amount":"-1.85","Balance":"47.7"},
+{"Date":"11d06d14 12:26","Description":"Commons Deli & Grill POS","Amount":"-0.99","Balance":"46.71"},
+{"Date":""},
+{"Date":""}]
+
+var dewick = 0;
+var carmichael = 0;
+var hodgdon = 0;
+var bnb = 0;
+var tower = 0;
+var mugar = 0;
+var cc = 0;
+console.log(mugar);
+
+
+data = JSONdata;
+for (i = 0; i < data.length; i++) {
+    if (data[i]['Description'] == 'Dewick/MacPhie Dining') {
+        dewick++;}
+    if (data[i]['Description'] == 'Carmichael Hall Dining') {
+        carmichael++;
+    }
+    if (data[i]['Description'] == 'Hodgdon Good-To-Go') {
+        hodgdon++;
+    }
+    if (data[i]['Description'] == 'Brown & Brew POS') {
+        bnb++;
+    }
+    if (data[i]['Description'] == 'Tower Cafe POS') {
+        tower++;
+    }
+    if (data[i]['Description'] == 'Mugar Cafe POS') {
+        mugar++;
+    }
+    if (data[i]['Description'] == 'Campus Center The REZ' || data[i]['Description'] == 'Commons Deli & Grill POS' || data[i]['Description'] == 'Hotung Cafe POS') {
+        cc++;
+    }
+}
+
+var eat_pieData = [
+    {value: dewick, color:"#F38630"},
+    {value : carmichael, color : "#5AD75A"},
+    {value : hodgdon, color : "#69D2E7"},
+    {value: bnb, color:"#FFCC00"},
+    {value : tower, color : "#CC66FF"},
+    {value : mugar, color : "#FF5959"},
+    {value : cc, color : "#3385FF"}
+];
+
+var myPie = new Chart(document.getElementById("eat_pie").getContext("2d")).Pie(eat_pieData);
+
+function makeDLegendColor(id, color) {
+    var dcanvas = document.getElementById(id);
+    var legcont = dcanvas.getContext('2d');
+    legcont.beginPath();
+    legcont.rect(1, 1, 30, 15);
+        legcont.fillStyle = color;
+    legcont.fill();
+};
+
+makeDLegendColor('dlegend1', '#F38630');
+makeDLegendColor('dlegend2', '#5AD75A');
+makeDLegendColor('dlegend3', '#69D2E7');
+makeDLegendColor('dlegend4', '#FFCC00');
+makeDLegendColor('dlegend5', '#CC66FF');
+makeDLegendColor('dlegend6', '#FF5959');
+makeDLegendColor('dlegend7', '#3385FF');
+    
+var meal = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+var cash = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+data = JSON.parse(JSONdata);
+for(i = 0; i < data.length;i++){
+    console.log(data[i]);
+}
+
+for (i = 0; i < data.length; i++) {
+    var date = data[i]['Date'];
+    var month;
+    if (date.search('d') != -1){
+        month = date.split('d') - 1;
+    }
+    else {
+        month = date.split('/') - 1;
+    }
+    if (data[i]['Description'] == 'Dewick/MacPhie Dining' || data[i]['Description'] == 'Carmichael Hall Dining' || data[i]['Description'] = 'Hodgdon Good-To-Go') {
+        meal[month - 1] = meal[month - 1] + Math.abs(data[i]['Amount']);
+    }
+    if (data[i]['Description'] == 'Tower Cafe POS' || data[i]['Description'] == 'Mugar Cafe POS' || data[i]['Description'] == 'Brown & Brew POS' || data[i]['Description'] == 'Campus Center The REZ' || data[i]['Description'] == 'Commons Deli & Grill POS' || data[i]['Description'] == 'Hotung Cafe POS') {
+        cash[month - 1] = cash[month - 1] + Math.abs(data[i]['Amount']);
+    }
+}
+
+var date1 = data[data.length - 1]['Date'];
+var month1 = date1.split('d') - 1;
+var m2inc  = [];
+m2inc.unshift(month1);
+for (i = 0; i < 5; i++) {
+    if (month1 > 0) {
+        m2inc.unshift(month1 -1);
+        month1--;
+    }
+    else {
+        month1 = month1 + 11;
+        m2inc.unshift(month1);
+    }
+}
+
+var barChartData = {
+    labels : [m2inc[0]+1, m2inc[1]+1, m2inc[2]+1, m2inc[3]+1, m2inc[4]+1, m2inc[5]+1],
+    datasets : [
+        {
+            fillColor : "#F38630",
+            strokeColor : "#F38630",
+            data : [meal[m2inc[0]], meal[m2inc[1]], meal[m2inc[2]], meal[m2inc[3]], meal[m2inc[4]], meal[m2inc[5]]]
+        },
+        {
+            fillColor : "#5AD75A",
+            strokeColor : "#5AD75A",
+            data : [cash[m2inc[0]], cash[m2inc[1]], cash[m2inc[2]], cash[m2inc[3]], cash[m2inc[4]], cash[m2inc[5]]]
+        },
+    ]
+}
+
+var myLine = new Chart(document.getElementById("eat_bar").getContext("2d")).Bar(barChartData);
+
+var infowindow = new google.maps.InfoWindow();
+var myLat = 0;
+var myLng = 0;
+
+function initialize() {
+    var eat_canvas = document.getElementById('eat_canvas');
+    var mapOptions = {
+            center: new google.maps.LatLng(42.406800, -71.119637),
+            zoom: 15,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+    var map = new google.maps.Map(eat_canvas, mapOptions);
+
+    var posDewick = new google.maps.LatLng(42.405507, -71.120998);
+    var Dewick = new google.maps.Marker({
+        position: posDewick,
+        map: map,
+        title: 'Dewick'
+    });
+
+    var posCarm = new google.maps.LatLng(42.409198, -71.122693);
+    var Carmichael = new google.maps.Marker({
+        position: posCarm,
+        map: map,
+        title: 'Carmichael'
+    });
+
+    var posHodgdon = new google.maps.LatLng(42.405538, -71.122071);
+    var Hodgdon = new google.maps.Marker({
+        position: posHodgdon,
+        map: map,
+        title: 'Hodgdon'
+    });
+
+    var posBnB = new google.maps.LatLng(42.406905, -71.116630);
+    var BnB = new google.maps.Marker({
+        position: posBnB,
+        map: map,
+        title: 'Brown and Brew'
+    });
+
+    var posTower = new google.maps.LatLng(42.406414, -71.118939);
+    var Tower = new google.maps.Marker({
+        position: posTower,
+        map: map,
+        title: 'Tower Cafe'
+    });
+
+    var posMugar = new google.maps.LatLng(42.408032, -71.121640);
+    var Mugar = new google.maps.Marker({
+        position: posMugar,
+        map: map,
+        title: 'Mugar Cafe'
+    });
+
+    var posCC = new google.maps.LatLng(42.405683, -71.119993);
+    var CC = new google.maps.Marker({
+        position: posCC,
+        map: map,
+        title: 'Campus Center'
+    });
+
+    google.maps.event.addListener(Dewick, 'click', function() {
+        infowindow.setContent('Dewick'); 
+        infowindow.open(map, this);
+    });
+
+    google.maps.event.addListener(Carmichael, 'click', function() {
+        infowindow.setContent('Carmichael'); 
+        infowindow.open(map, this);
+    });
+
+    google.maps.event.addListener(Hodgdon, 'click', function() {
+        infowindow.setContent('Hodgdon'); 
+        infowindow.open(map, this);
+    });
+
+    google.maps.event.addListener(BnB, 'click', function() {
+        infowindow.setContent('Brown and Brew'); 
+        infowindow.open(map, this);
+    });
+
+    google.maps.event.addListener(Tower, 'click', function() {
+        infowindow.setContent('Tower Cafe'); 
+        infowindow.open(map, this);
+    });
+
+    google.maps.event.addListener(Mugar, 'click', function() {
+        infowindow.setContent('Mugar Cafe'); 
+        infowindow.open(map, this);
+    });
+
+    google.maps.event.addListener(CC, 'click', function() {
+        infowindow.setContent('Campus Center'); 
+        infowindow.open(map, this);
+    });
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            myLat = position.coords.latitude;
+            myLng = position.coords.longitude;
+        });
+        var posMe = new google.maps.LatLng(myLat, myLng);
+        var me = new google.maps.Marker({
+            position: posMe,
+            map: map,
+            title: 'My Location'
+        });
+        google.maps.event.addListener(me, 'click', function() {
+            infowindow.setContent('My location');
+            infowindow.open(map, this);
+        });
+    }
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+
+
+BKFST_CONST = 6.68;
+LUNCH_CONST = 11.03;
+DIN_CONST = 13.22;
+DAYS_CONST = 112;
+
+function initDining()
+{
+    determineEfficiency();
+}
+function dollarAmount(){
+    var breakfast;
+    var lunch;
+    var dinner;
+    var dollarEquivalence;
+
+
+    for ( var i = 0; i < results.length-1; i++){
+        if ((JSONdata[i]["Description"] == "Hodgdon Good-To-Go" || JSONdata[i]["Description"]
+             == "Carmichael Hall Dining" || JSONdata[i]["Description"] == "Dewick/MacPhie Dining"
+             || JSONdata[i]["Description"] == "Adjustment - Withdrawl" || JSONdata[i]["Description"] == 
+              "Commons Deli & Grill POS") && (JSONdata[i]["Amount"] == -1)) {
+
+            var strDate = JSONdata[i]["Date"];
+            var dateParts = strDate.split(" ");
+            var time = dateParts[1];
+            var timeParts = time.split(":");
+            var hour = Number(timeParts[0]);
+            
+            if (hour < 11){
+                breakfast = breakfast + 1;
+            }
+            else if( hour >= 11 && hour < 17){
+                lunch = lunch + 1;
+            }
+            else{
+                dinner = dinner + 1;
+            }
+        }
+    }
+
+    dollarEquivalence = BKFST_CONST * breakfast + LUNCH_CONST * lunch + DIN_CONST * dinner;
+    return dollarEquivalence;
+}
+
+function determineEfficiency()
+{
+    console.log("i'm in the determineEfficiency function!!!");
+    var value = dollarAmount() * scaleMonths();
+    var MPPrice = mealPlanEquivalence(mealPlan);
+    if (value > MPPrice){
+        var output = document.getElementById("message");
+        output.innerHTML = "You are using your meal plan efficiently!";
+
+        var output1 = document.getElementById("message1");
+        output1.innerHTML = "The real value of the meals you in the Dining Halls is $" + value + ".  This means that the amount you are currently paying for your meal plan is less than what you would pay if you used JumboCash for every meal. Keep up the good work!";
+    }
+    else if (value == MPPrice){
+        var output = document.getElementById("message");
+        output.innerHTML = "You are breaking even with your current meal plan.";
+
+        var output1 = document.getElementById("message1");
+        output1.innerHTML = "The real value of the meals you in the Dining Halls is $" + value + ". This means that the amount you are currently paying for your meal plan is equivalent to total value of all meals you have swiped in for.";
+    }
+    else{
+        var output = document.getElementById("message");
+        output.innerHTML = "You are currently inefficient with your meal plan usage.";
+
+        var output1 = document.getElementById("message1");
+        output1.innerHTML = "The real value of the meals you in the Dining Halls is $" + value + ". <br/>Suggestions for using your meal plan more efficiently: <br><ul><li> Try getting a smaller meal plan! You may not be using all of your meals.</li><li> Using a meal swipe for breakfast is more expensive than paying with JumboCash. Try using this as an alternative.</li></ul>"
+
+        
+    }
+}
+
+function mealPlanEquivalence(mealPlan)
+{
+    if (mealPlan == "Unlimited"){
+        return 2776;
+    }
+    else if (mealPlan == "220"){
+        return 2542;
+    }
+    else if (mealPlan == "160"){
+        return 1849;
+    }
+    else if (mealPlan == "100"){
+        return 1208;
+    }
+    else if (mealPlan == "80"){
+        return 987;
+    }
+    else if (mealPlan == "40"){
+        return 500;
+    }
+}
+function scaleMonths()
+{
+<<<<<<< HEAD
+    var numDays = 0;
+
+    for (var i = 0; results.length-1; i++){
+        var strDate = JSONdata["Date"];
+        var dateParts = strDate.split(" ");
+        var date = dateParts[0];
+        var monthPart;
+        var month;
+        var day;
+=======
+    var calendar = makeCalendar();
+    var startDate = results[0];
+    var endDate = results[results.length-1];
+>>>>>>> FETCH_HEAD
+
+    if (startDate.search("d") != -1){
+            monthPartS = results[0].split("d");
+            monthPartE = results[results.length-1].split("d");
+    }
+        else{
+            monthPartS = results[0].split("/");
+            monthPartE = results[results.length-1].split("/");
+    }
+        monthS = monthPartS[0];
+        monthE = monthPartE[0];
+        dayS = monthPartS[1];
+        dayE = monthPartE[1];
+
+    var numDays = 0;
+
+    for (var i = 0; i < 365; i++){
+        var dateParts = calendar[i].split("/");
+        var month = dateParts[0];
+        var day = dateParts[1];
+
+        if (( month == monthS && day == dayS))
+        {
+            while ( month != monthE && day != dayE){
+                if (!((month == 12 && day >= 20) && (month == 01 && day <= 13) && 
+               (month == 03 && day >= 15 && day <= 23) && (month == 05 && day >=11) && 
+               (month == 06) && (month == 07) && (month == 08 && day <= 26) && 
+               (month == 11 && day >= 26 && day <= 29))){
+                numDays++
+            }
+        }
+
+
+    }
+
+    var scale = DAYS_CONST/numDays;
+    return scale;
+}
+
+function makeCalendar(){
+    var calendar = [];
+
+    for (int i = 0; i < 31; i++){
+        calendar[i] = "01/";
+        if (i <= 0 || i >=8){
+            calendar[i] = calendar[i] + "0";
+        }
+        var dayNum= (i+1);
+        var num = dayNum.toSring();
+        calendar[i] = calendar[i] + num;
+    }
+
+    for (int i = 31; i < 59; i++){
+        calendar[i] = "02/";
+        if (i <= 31 || i >=39){
+            calendar[i] = calendar[i] + "0";
+        }
+        var dayNum= (i-31+1);
+        var num = dayNum.toSring();
+        calendar[i] = calendar[i] + num;
+    }
+    for (int i = 59; i < 90; i++){
+        calendar[i] = "03/";
+        if (i <= 59 || i >=76){
+            calendar[i] = calendar[i] + "0";
+        }
+        var dayNum= (i-59+1);
+        var num = dayNum.toSring();
+        calendar[i] = calendar[i] + num;
+    }
+    for (int i = 90; i < 120; i++){
+        calendar[i] = "04/";
+        if (i <= 90 || i >=98){
+            calendar[i] = calendar[i] + "0";
+        }
+        var dayNum= (i-90+1);
+        var num = dayNum.toSring();
+        calendar[i] = calendar[i] + num;
+    }
+    for (int i = 120; i < 150 ; i++){
+        calendar[i] = "05/";
+        if (i <= 120 || i >=128){
+            calendar[i] = calendar[i] + "0";
+        }
+        var dayNum= (i-120+1);
+        var num = dayNum.toSring();
+        calendar[i] = calendar[i] + num;
+    }
+    for (int i = 150; i < 181; i++){
+        calendar[i] = "06/";
+        if (i <= 150 || i >=158){
+            calendar[i] = calendar[i] + "0";
+        }
+        var dayNum= (i-150+1);
+        var num = dayNum.toSring();
+        calendar[i] = calendar[i] + num;
+    }
+    for (int i = 181; i < 212; i++){
+        calendar[i] = "07/";
+        if (i <= 181 || i >=189){
+            calendar[i] = calendar[i] + "0";
+        }
+        var dayNum= (i-181+1);
+        var num = dayNum.toSring();
+        calendar[i] = calendar[i] + num;
+    }
+    for (int i = 212; i < 243; i++){
+        calendar[i] = "08/";
+        if (i <= 212 || i >=220){
+            calendar[i] = calendar[i] + "0";
+        }
+        var dayNum= (i-212+1);
+        var num = dayNum.toSring();
+        calendar[i] = calendar[i] + num;
+    }
+    for (int i = 243; i < 273; i++){
+        calendar[i] = "09/";
+        if (i <= 243 || i >=251){
+            calendar[i] = calendar[i] + "0";
+        }
+        var dayNum= (i-243+1);
+        var num = dayNum.toSring();
+        calendar[i] = calendar[i] + num;
+    }
+    for (int i = 273; i < 304; i++){
+        calendar[i] = "10/";
+        if (i <= 273 || i >=281){
+            calendar[i] = calendar[i] + "0";
+        }
+        var dayNum= (i-273+1);
+        var num = dayNum.toSring();
+        calendar[i] = calendar[i] + num;
+    }
+    for (int i = 304; i < 334; i++){
+        calendar[i] = "11/";
+        if (i <= 304 || i >= 312){
+            calendar[i] = calendar[i] + "0";
+        }
+        var dayNum= (i-304+1);
+        var num = dayNum.toSring();
+        calendar[i] = calendar[i] + num;
+    }
+    for (int i = 334; i < 365; i++){
+        calendar[i] = "12/";
+        if (i <= 334 || i >= 342){
+            calendar[i] = calendar[i] + "0";
+        }
+        var dayNum= (i-334ow +1);
+        var num = dayNum.toSring();
+        calendar[i] = calendar[i] + num;
+    }
+
+    return calendar;
+}
+</script>
+<script>
+
+JSONdata = [{"Date":"11d04d14 17:55","Description":"Ginn Library Printers","Amount":"-0.1","Balance":"53.44"},
+{"Date":"11d05d14 11:52","Description":"Commons Deli & Grill POS","Amount":"-3.89","Balance":"49.55"},
+{"Date":"11d06d14 10:27","Description":"Mugar Cafe POS","Amount":"-1.85","Balance":"47.7"},
+{"Date":"11d06d14 12:26","Description":"Commons Deli & Grill POS","Amount":"-0.99","Balance":"46.71"},
+{"Date":""},
+{"Date":""}]
+
+var ginn = 0;
+var tisch = 0;
+var eaton = 0;
+
+data = JSONdata;
+for (i = 0; i < data.length; i++) {
+    if (data[i]['Description'] == 'Ginn Library Printers') {
+        ginn = ginn + Math.abs(data[i]['Amount']);
+    }
+    if (data[i]['Description'] == 'Tisch Library Printers' || data[i]['Description'] == 'Tisch Library Copiers') {
+        tisch = tisch + Math.abs(data[i]['Amount']);
+    }
+    if (data[i]['Description'] == 'Eaton Printers') {
+        eaton = eaton + Math.abs(data[i]['Amount']);
+    }
+}
+
+var print_pieData = [
+        {value: tisch, color:"#F38630"},
+        {value : ginn, color : "#5AD75A"},
+        {value : eaton, color : "#69D2E7"}
+    ];
+var ctx_1 = document.getElementById("print_pie").getContext("2d");
+var myPie = new Chart(ctx_1).Pie(print_pieData);
+
+// Pie Legend
+function makePLegendColor(id, color) {
+    var pcanvas = document.getElementById(id);
+    var legcont = pcanvas.getContext('2d');
+    legcont.beginPath();
+    legcont.rect(1, 1, 30, 15);
+        legcont.fillStyle = color;
+    legcont.fill();
+};
+
+makePLegendColor('plegend1', '#F38630');
+makePLegendColor('plegend2', '#5AD75A');
+makePLegendColor('plegend3', '#69D2E7');
+
+//  ---------------------------------------------------------------------------------------------
+
+// Bar graph
+var ginn2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+var tisch2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+var eaton2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+data = JSONdata;
+
+for (i = 0; i < data.length; i++) {
+    var date = data[i]['Date'];
+    var month;
+    if (date.search('d') != -1){
+        month = date.split('d') - 1;
+    }
+    else {
+        month = date.split('/') - 1;
+    }
+    if (data[i]['Description'] == 'Ginn Library Printers') {
+        ginn2[month - 1] = ginn2[month - 1] + Math.abs(data[i]['Amount']);
+    }
+    if (data[i]['Description'] == 'Tisch Library Printers' || data[i]['Description'] == 'Tisch Library Copiers') {
+        tisch2[month - 1] = tisch2[month - 1] + Math.abs(data[i]['Amount']);
+    }
+    if (data[i]['Description'] == 'Eaton Printers') {
+        eaton2[month - 1] = eaton2[month - 1] + Math.abs(data[i]['Amount']);
+    }
+}
+
+var date1 = data[data.length - 1]['Date'];
+var month1 = date1.split('d') - 1;
+var m2inc  = [];
+m2inc.unshift(month1);
+for (i = 0; i < 5; i++) {
+    if (month1 > 0) {
+        m2inc.unshift(month1 -1);
+        month1--;
+    }
+    else {
+        month1 = month1 + 11;
+        m2inc.unshift(month1);
+    }
+}
+
+var barChartData = {
+    labels : [m2inc[0]+1, m2inc[1]+1, m2inc[2]+1, m2inc[3]+1, m2inc[4]+1, m2inc[5]+1],
+    datasets : [
+        {
+            fillColor : "#F38630",
+            strokeColor : "#F38630",
+            data : [tisch2[m2inc[0]], tisch2[m2inc[1]], tisch2[m2inc[2]], tisch2[m2inc[3]], tisch2[m2inc[4]], tisch2[m2inc[5]]]
+        },
+        {
+            fillColor : "#5AD75A",
+            strokeColor : "#5AD75A",
+            data : [ginn2[m2inc[0]], ginn2[m2inc[1]], ginn2[m2inc[2]], ginn2[m2inc[3]], ginn2[m2inc[4]], ginn2[m2inc[5]]]
+        },
+        {
+            fillColor : "#69D2E7",
+            strokeColor : "#69D2E7",
+            data : [eaton2[m2inc[0]], eaton2[m2inc[1]], eaton2[m2inc[2]], eaton2[m2inc[3]], eaton2[m2inc[4]], eaton2[m2inc[5]]]
+        }
+    ]
+}
+
+var myLine = new Chart(document.getElementById("print_bar").getContext("2d")).Bar(barChartData);
+
+
+// Google maps
+var infowindow = new google.maps.InfoWindow();
+var myLat = 0;
+var myLng = 0;
+
+function initialize() {
+    var print_canvas = document.getElementById('print_canvas');
+    var mapOptions = {
+            center: new google.maps.LatLng(42.406800, -71.119637),
+            zoom: 16,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+    var map = new google.maps.Map(print_canvas, mapOptions);
+
+    var posGinn = new google.maps.LatLng(42.408036, -71.121552);
+    var Ginn = new google.maps.Marker({
+            position: posGinn,
+            map: map,
+            title: 'Ginn'
+        });
+
+    var posEaton = new google.maps.LatLng(42.406838, -71.118488);
+    var Eaton = new google.maps.Marker({
+            position: posEaton,
+            map: map,
+            title: 'Eaton'
+        });
+
+        var posTisch = new google.maps.LatLng(42.406343, -71.118713);
+    var Tisch = new google.maps.Marker({
+            position: posTisch,
+            map: map,
+            title: 'Tisch'
+        });
+
+
+    google.maps.event.addListener(Tisch, 'click', function() {
+        infowindow.setContent('Tisch'); 
+        infowindow.open(map, this);
+    });
+
+    google.maps.event.addListener(Ginn, 'click', function() {
+        infowindow.setContent('Ginn'); 
+        infowindow.open(map, this);
+    });
+
+    google.maps.event.addListener(Eaton, 'click', function() {
+        infowindow.setContent('Eaton'); 
+        infowindow.open(map, this);
+    });
+
+
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            myLat = position.coords.latitude;
+            myLng = position.coords.longitude;
+        });
+        var posMe = new google.maps.LatLng(myLat, myLng);
+        var me = new google.maps.Marker({
+            position: posMe,
+            map: map,
+            title: 'My Location'
+        });
+        google.maps.event.addListener(me, 'click', function() {
+            infowindow.setContent('My location');
+            infowindow.open(map, this);
+        });
+    }
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+
+
+printer_CONST = 50;
+page_CONST = 200;
+ink_CONST = 13;
+ream_CONST = 500;
+reamcost_CONST = 8;
+pricePPage_CONST = .1;
+DAYS_CONST = 112;
+
+function initPrint()
+{
+    print();
+}
+
+//data from json: $$ from printing
+function print()
+{
+    var moneySpentSem = totalPrintCost;
+    var moneySpent = moneySpentSem * 8;
+    var pagesSem = moneySpent/pricePPage_CONST;
+    var pages = pagesSem * 8;
+    var numCartridges = Math.ceil(pages/page_CONST);
+    var numReams = Math.ceil(pages/ream_CONST);
+    var addlPages = 367 - pagesSem;
+
+    var printerPrice = printer_CONST + numCartridges * ink_CONST + numReams * ream_CONST;
+ 
+    if (printerPrice < moneySpent){
+        var output2 = document.getElementById("message2");
+        output.innerHTML = "It would be more cost efficent for you to buy a printer!!";
+
+        var output3 = document.getElementById("message3");
+        output1.innerHTML = "Per semester, you print " + pages + " pages, for a total of $" + moneySpentSem + ". Check out our links to affordable printers to start saving today!"; 
+
+    }
+    else if (printerPrice == moneySpent){
+        var output2 = document.getElementById("message2");
+        output.innerHTML = "It would cost the same for you to print on campus or to purchase your own printer.";
+
+        var output3 = document.getElementById("message3");
+        output1.innerHTML = "Per semester, you print " + pages + " pages, for a total of $" + moneySpentSem + ". If you anticipate increased future printer use, check out our links to affordable printers for your convenience or to start saving!";
+    }
+    else{
+        var output2 = document.getElementById("message2");
+        output.innerHTML = "It would be more cost efficient for you to print on campus than it would be to purchase your own printer.";
+
+        var output3 = document.getElementById("message3");
+        output1.innerHTML = "Per semester, you print " + pages + " pages, for a total of $" + moneySpentSem + ". For purchasing a printer to be cost efficient, you would need to print " +  addlPages + "each semester.";
+    }
+}
+
+function scaleMonths()
+{
+<<<<<<< HEAD
+    var numDays = 0;
+
+    for (var i = 0; results.length-1; i++){
+        var strDate = JSONdata["Date"];
+        var dateParts = strDate.split(" ");
+        var date = dateParts[0];
+        var monthPart;
+        var month;
+        var day;
+=======
+    var calendar = makeCalendar();
+    var startDate = results[0];
+    var endDate = results[results.length-1];
+>>>>>>> FETCH_HEAD
+
+    if (startDate.search("d") != -1){
+            monthPartS = results[0].split("d");
+            monthPartE = results[results.length-1].split("d");
+    }
+        else{
+            monthPartS = results[0].split("/");
+            monthPartE = results[results.length-1].split("/");
+    }
+        monthS = monthPartS[0];
+        monthE = monthPartE[0];
+        dayS = monthPartS[1];
+        dayE = monthPartE[1];
+
+    var numDays = 0;
+
+    for (var i = 0; i < 365; i++){
+        var dateParts = calendar[i].split("/");
+        var month = dateParts[0];
+        var day = dateParts[1];
+
+        if (( month == monthS && day == dayS))
+        {
+            while ( month != monthE && day != dayE){
+                if (!((month == 12 && day >= 20) && (month == 01 && day <= 13) && 
+               (month == 03 && day >= 15 && day <= 23) && (month == 05 && day >=11) && 
+               (month == 06) && (month == 07) && (month == 08 && day <= 26) && 
+               (month == 11 && day >= 26 && day <= 29))){
+                numDays++
+            }
+        }
+
+
+    }
+
+    var scale = DAYS_CONST/numDays;
+    return scale;
+}
+
+function makeCalendar(){
+    var calendar = [];
+
+    for (int i = 0; i < 31; i++){
+        calendar[i] = "01/";
+        if (i <= 0 || i >=8){
+            calendar[i] = calendar[i] + "0";
+        }
+        var dayNum= (i+1);
+        var num = dayNum.toSring();
+        calendar[i] = calendar[i] + num;
+    }
+
+    for (int i = 31; i < 59; i++){
+        calendar[i] = "02/";
+        if (i <= 31 || i >=39){
+            calendar[i] = calendar[i] + "0";
+        }
+        var dayNum= (i-31+1);
+        var num = dayNum.toSring();
+        calendar[i] = calendar[i] + num;
+    }
+    for (int i = 59; i < 90; i++){
+        calendar[i] = "03/";
+        if (i <= 59 || i >=76){
+            calendar[i] = calendar[i] + "0";
+        }
+        var dayNum= (i-59+1);
+        var num = dayNum.toSring();
+        calendar[i] = calendar[i] + num;
+    }
+    for (int i = 90; i < 120; i++){
+        calendar[i] = "04/";
+        if (i <= 90 || i >=98){
+            calendar[i] = calendar[i] + "0";
+        }
+        var dayNum= (i-90+1);
+        var num = dayNum.toSring();
+        calendar[i] = calendar[i] + num;
+    }
+    for (int i = 120; i < 150 ; i++){
+        calendar[i] = "05/";
+        if (i <= 120 || i >=128){
+            calendar[i] = calendar[i] + "0";
+        }
+        var dayNum= (i-120+1);
+        var num = dayNum.toSring();
+        calendar[i] = calendar[i] + num;
+    }
+    for (int i = 150; i < 181; i++){
+        calendar[i] = "06/";
+        if (i <= 150 || i >=158){
+            calendar[i] = calendar[i] + "0";
+        }
+        var dayNum= (i-150+1);
+        var num = dayNum.toSring();
+        calendar[i] = calendar[i] + num;
+    }
+    for (int i = 181; i < 212; i++){
+        calendar[i] = "07/";
+        if (i <= 181 || i >=189){
+            calendar[i] = calendar[i] + "0";
+        }
+        var dayNum= (i-181+1);
+        var num = dayNum.toSring();
+        calendar[i] = calendar[i] + num;
+    }
+    for (int i = 212; i < 243; i++){
+        calendar[i] = "08/";
+        if (i <= 212 || i >=220){
+            calendar[i] = calendar[i] + "0";
+        }
+        var dayNum= (i-212+1);
+        var num = dayNum.toSring();
+        calendar[i] = calendar[i] + num;
+    }
+    for (int i = 243; i < 273; i++){
+        calendar[i] = "09/";
+        if (i <= 243 || i >=251){
+            calendar[i] = calendar[i] + "0";
+        }
+        var dayNum= (i-243+1);
+        var num = dayNum.toSring();
+        calendar[i] = calendar[i] + num;
+    }
+    for (int i = 273; i < 304; i++){
+        calendar[i] = "10/";
+        if (i <= 273 || i >=281){
+            calendar[i] = calendar[i] + "0";
+        }
+        var dayNum= (i-273+1);
+        var num = dayNum.toSring();
+        calendar[i] = calendar[i] + num;
+    }
+    for (int i = 304; i < 334; i++){
+        calendar[i] = "11/";
+        if (i <= 304 || i >= 312){
+            calendar[i] = calendar[i] + "0";
+        }
+        var dayNum= (i-304+1);
+        var num = dayNum.toSring();
+        calendar[i] = calendar[i] + num;
+    }
+    for (int i = 334; i < 365; i++){
+        calendar[i] = "12/";
+        if (i <= 334 || i >= 342){
+            calendar[i] = calendar[i] + "0";
+        }
+        var dayNum= (i-334ow +1);
+        var num = dayNum.toSring();
+        calendar[i] = calendar[i] + num;
+    }
+
+    return calendar;
+}
+</script>
+</body>
+</html>

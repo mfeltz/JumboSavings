@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Jumbo Savings</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="../../assets/ico/favicon.ico">
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <link href="cover.css" rel="stylesheet">
+    <script>
+      function go2data() {
+          console.log("got to function");
+          var username = document.getElementById('user').value;
+          window.open("/user/" + username);
+      }
+    </script>
+  </head>
+
+  <body>
+    <div class="site-wrapper">
+      <div class="site-wrapper-inner">
+        <div class="cover-container">
+          <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="cover">Jumbo Savings</a>
+            </div>
+            <div class="navbar-collapse collapse">
+              <form class="navbar-form navbar-right" role="form" onsubmit="go2data()">
+                <div class="form-group">
+                  <input type="text" placeholder="Username" class="form-control" id="user">
+                </div>
+                <div class="form-group">
+                  <input type="password" placeholder="Password" class="form-control">
+                </div>
+                <button type="submit" value="Submit" class="btn btn-success">Sign in</button>
+              </form>
+            </div>
+        </div>
+    </div>
+          <div class="inner cover">
+            <br><br>
+            <h1 class="cover-heading">Welcome to Jumbo Savings</h1>
+            <p class="lead">New? Upload your JumboCash data to get started.</p>
+            <p class="lead">
+              <a href="upload" class="btn btn-lg btn-default">Upload Data</a>
+            </p>
+          </div>
+          <div class="mastfoot">
+            <div class="inner">
+              <footer>
+                <p><a href="cover">Home</a> | <a href="about">About Us</a> | <a href="faq">FAQ</a> | <a href="contact">Contact</a> | Jumbo Savings 2014</p>
+              </footer>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+

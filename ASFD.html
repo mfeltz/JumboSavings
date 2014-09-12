@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Jumbo Savings: Your Data</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="chart.js"></script>
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <link href="pages.css" rel="stylesheet">
+    <link href="bootstrap.css" rel="stylesheet">
+    <style>
+            body {
+                background-color: #DEEFFF;
+            }
+            #title {
+                text-align: left;
+            }
+            #block {
+                border-style: solid;
+                border-width: 1px;
+                border-color: white;
+                border-radius: 25px;
+                background: #EFF7FF;
+                font-family: "Lucida Sans Unicode";
+                width: 400px;
+                height: 360px;
+                padding-left: 10px;
+                float: left;
+                margin: 15px;
+                padding-right: 20px;
+            }
+            h1 {
+                text-align: center;
+                font-size: 25px;
+            }
+            p {
+                padding-left: 15px;
+            }
+            #legend {
+                float: right;
+                padding-right: 25px;
+            }
+            #map_canvas {
+                margin-left: 10px;
+                width: 360px;
+                height: 270px;
+            }
+        </style>
+=======
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="cover">Jumbo Savings</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="cover">Home</a></li>
+                    <li><a href="about">About</a></li>
+                    <li><a href="contact">Contact</a></li>
+                    <li><div>
+                    <!--for default text, insert variable for "data-text"-->
+                    <p><%= username=></p>
+                    <a href="https://twitter.com/share" class="twitter-share-button" data-lang="en" data-text="I LOVE JUMBO SAVINGS">Tweet</a>
+                     <script>!function(d,s,id){
+                        var js,fjs=d.getElementsByTagName(s)[0];
+                        if(!d.getElementById(id)){
+                            js=d.createElement(s);
+                            js.id=id;
+                            js.src="https://platform.twitter.com/widgets.js";
+                            fjs.parentNode.insertBefore(js,fjs);
+                        }
+                    }(document,"script","twitter-wjs");</script>
+                        </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <br><br>
+    <h1>Your Data</h1>
+    <div id="content">
+        <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+            <li class="active"><a href="#dining" data-toggle="tab">Dining</a></li>
+            <li><a href="#printing" data-toggle="tab">Printing</a></li>
+        </ul>
+        <div id="my-tab-content" class="tab-content">
+            <div class="tab-pane active" id="dining">
+                <div id='block'>
+                    <h1>Am I using my meal Plan effciently?</h1>
+                        <div id = "message">When we have real data, this will be the output message. </div>
+                </div>
+                <div id='block'>
+                    <h1>What is the "value" of the meals I eat in the Dining Halls?</h1>
+                         <div id = "message1">When we have real data, this will be suggestions, etc. </div>
+                </div>
+                <div id='block'>
+                    <h1>Dining by Location</h1>
+                    <canvas id="eat_pie" height="160" width="160">
+                    <div id="dlegend">
+                        <p><canvas id="dlegend1" height="15" width="30"></canvas>&nbsp&nbspDewick<br>
+                        <canvas id="dlegend2" height="15" width="30"></canvas>&nbsp&nbspCarmichael<br>
+                        <canvas id="dlegend3" height="15" width="30"></canvas>&nbsp&nbspHodgdon<br>
+                        <canvas id="dlegend4" height="15" width="30"></canvas>&nbsp&nbspBrown and Brew<br>
+                        <canvas id="dlegend5" height="15" width="30"></canvas>&nbsp&nbspTower Cafe<br>
+                        <canvas id="dlegend6" height="15" width="30"></canvas>&nbsp&nbspMugar Cafe<br>
+                        <canvas id="dlegend7" height="15" width="30"></canvas>&nbsp&nbspCampus Center</p>
+                    </div>
+                    </canvas>
+                </div>
+                <div id='block'>
+                    <h1>Dining by Month</h1>
+                    <canvas id="eat_bar" height="250" width="380"></canvas>
+                </div>
+                <div id='block'>
+                    <h1>Locations to Eat</h1>
+                    <div id="eat_canvas">
+                    </div>
+                </div>
+                <div id='block'>
+                    <h1>Compare meal plans by price</h1>
+                    <table>
+                        <tr>
+                            <th>Meal plan&nbsp&nbsp&nbsp&nbsp</th>
+                            <th>Total price&nbsp&nbsp&nbsp&nbsp</th>
+                            <th>Price per meal&nbsp&nbsp&nbsp&nbsp</th>
+                        </tr>
+                        <tr>
+                            <td>Unlimited</td>
+                            <td>$2879</td>
+                            <td>n/a</td>
+                        </tr>
+                        <tr>
+                            <td>220</td>
+                            <td>$2636</td>
+                            <td>$11.98</td>
+                        </tr>
+                        <tr>
+                            <td>160</td>
+                            <td>$1916</td>
+                            <td>$11.98</td>
+                        </tr>
+                        <tr>
+                            <td>100</td>
+                            <td>$1240</td>
+                            <td>$12.40</td>
+                        </tr>
+                        <tr>
+                            <td>80</td>
+                            <td>$1004</td>
+                            <td>$12.55</td>
+                        </tr>
+                        <tr>
+                            <td>40</td>
+                            <td>$500</td>
+                            <td>$12.50</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane" id="printing">
+                <div id='block'>
+                    <h1>Should I buy a printer?</h1>
+                    <div id = "message2">When we have real data, this will be the output message. </div>
+                    </div>
+                </div>
+                <div id='block'>
+                    <h1>What are my printing habits and what can I do to be more cost efficient?</h1>
+                    <div id = "message3">When we have real data, this will be the output message. </div>
+                </div>
+                <div id='block'>
+                    <h1>Printing by Location</h1>
+                    <canvas id="print_pie" height="240" width="240"></canvas>
+                    <div id="plegend">
+                        <p><canvas id="plegend1" height="15" width="30"></canvas>&nbsp&nbspTisch<br>
+                        <canvas id="plegend2" height="15" width="30"></canvas>&nbsp&nbspGinn<br>
+                        <canvas id="plegend3" height="15" width="30"></canvas>&nbsp&nbspEaton</p>
+                    </div>
+                </div>
+                <div id='block'>
+                    <h1>Printing by Month</h1>
+                    <canvas id="print_bar" height="250" width="380"></canvas>
+                </div>
+                <div id='block'>
+                    <h1>Locations to Print</h1>
+                    <div id="print_canvas">
+                    </div>
+                </div>
+                <div id='block'>
+                    <h1>Places to buy affordable printers</h1>
+                    <p><a href="http://www.amazon.com">Amazon</a></br>
+                    <a href="https://shopping.yahoo.com">Yahoo! Shopping</a></br>
+                    <a href="http://www.ebay.com/">Ebay</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br style="clear:both" />
+    <footer>
+        <p>&copy; <a href="cover">Home</a> | <a href="about">About Us</a> | <a href="faq">FAQ</a> | <a href="contact">Contact</a> | Jumbo Savings 2014</p>
+    </footer>
+    <script type="text/javascript">
+        $('#tabs a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        })
+    </script>    
+<script> 
+
+var dewick = 0;
+var carmichael = 0;
+var hodgdon = 0;
+var bnb = 0;
+var tower = 0;
+var mugar = 0;
+var cc = 0;
+
+
+JSONdata = [{"Date":"11d04d14 17:55","Description":"Ginn Library Printers","Amount":-0.1,"Balance":53.44},
+{"Date":"11d05d14 11:52","Description":"Commons Deli & Grill POS","Amount":-3.89,"Balance":49.55},
+{"Date":"11d06d14 10:27","Description":"Mugar Cafe POS","Amount":-1.85,"Balance":47.7},
+{"Date":"11d06d14 12:26","Description":"Commons Deli & Grill POS","Amount":-0.99,"Balance":46.71},
+{"Date":"11d07d14 11:41","Description":"Commons Deli & Grill POS","Amount":-3.78,"Balance":42.93},
+{"Date":"11d11d14 13:52","Description":"Campus Center The REZ","Amount":-1.75,"Balance":41.18},
+{"Date":"11d12d14 11:40","Description":"Commons Deli & Grill POS","Amount":-5.09,"Balance":36.09},
+{"Date":"11d12d14 12:57","Description":"Tisch Library Printers","Amount":-0.1,"Balance":35.99},
+{"Date":"11d12d14 12:57","Description":"Tisch Library Printers","Amount":-0.1,"Balance":35.89},
+{"Date":"11d12d14 12:57","Description":"Tisch Library Printers","Amount":-0.1,"Balance":35.79},
+{"Date":"11d12d14 12:57","Description":"Tisch Library Printers","Amount":-1.1,"Balance":34.69},
+{"Date":"11d12d14 13:06","Description":"Tisch Library Printers","Amount":-0.1,"Balance":34.59},
+{"Date":"11d12d14 17:37","Description":"Commons Deli & Grill POS","Amount":-5.25,"Balance":29.34},
+{"Date":"11d13d14 10:21","Description":"Mugar Cafe POS","Amount":-1.85,"Balance":27.49},
+{"Date":"11d13d14 17:45","Description":"Commons Deli & Grill POS","Amount":-1.45,"Balance":26.04},
+{"Date":"11d14d14 12:00","Description":"Commons Deli & Grill POS","Amount":-3.89,"Balance":22.15},
+{"Date":"11d14d14 13:20","Description":"Ginn Library Printers","Amount":-1.2,"Balance":20.95},
+{"Date":"11d14d14 13:20","Description":"Ginn Library Printers","Amount":-1.6,"Balance":19.35},
+{"Date":"11d14d14 13:20","Description":"Ginn Library Printers","Amount":-0.7,"Balance":18.65},
+{"Date":"11d14d14 15:25","Description":"Tower Cafe POS","Amount":-0.99,"Balance":17.66},
+{"Date":"11d15d14 11:17","Description":"Campus Center The REZ","Amount":-1.75,"Balance":15.91},
+{"Date":"11d19d14 11:34","Description":"Commons Deli & Grill POS","Amount":-3.75,"Balance":12.16},
+{"Date":"11d21d14 13:21","Description":"Ginn Library Printers","Amount":-0.2,"Balance":11.96},
+{"Date":"11d22d14 9:22","Description":"Ginn Library Printers","Amount":-0.1,"Balance":11.86},
+{"Date":"11d25d14 14:44","Description":"Tisch Library Printers","Amount":-0.15,"Balance":11.71},
+{"Date":"12d03d14 10:19","Description":"Ginn Library Printers","Amount":-1.5,"Balance":10.21},
+{"Date":"12d03d14 15:03","Description":"Tisch Library Printers","Amount":-2,"Balance":8.21},
+{"Date":"12d03d14 15:04","Description":"Tisch Library Printers","Amount":-0.3,"Balance":7.91},
+{"Date":"12d05d14 13:23","Description":"Ginn Library Printers","Amount":-0.9,"Balance":7.01},
+{"Date":"12d14d14 20:21","Description":"Adjustment - Deposit","Amount":200,"Balance":207.01},
+{"Date":"12d14d14 20:49","Description":"LAUNDRY RICHARDSON HOUSE - Lau","Amount":-1.25,"Balance":205.76},
+{"Date":"12d16d14 9:44","Description":"Tisch Library Printers","Amount":-0.7,"Balance":205.06},
+{"Date":"12d16d14 14:08","Description":"Commons Deli & Grill POS","Amount":-4.23,"Balance":200.83},
+{"Date":"12d17d14 12:13","Description":"Tisch Library Printers","Amount":-0.6,"Balance":200.23},
+{"Date":"12d17d14 12:18","Description":"Commons Deli & Grill POS","Amount":-3.5,"Balance":196.73},
+{"Date":"01d15d14 14:35","Description":"Commons Deli & Grill POS","Amount":-1.8,"Balance":194.93},
+{"Date":"01d15d14 16:21","Description":"Bookstore Interface Medford","Amount":-12.64,"Balance":182.29},
+{"Date":"01d16d14 8:24","Description":"Tisch Library Printers","Amount":-0.1,"Balance":182.19},
+{"Date":"01d16d14 8:24","Description":"Tisch Library Printers","Amount":-0.1,"Balance":182.09},
+{"Date":"01d18d14 20:24","Description":"Commons Deli & Grill POS","Amount":-5.65,"Balance":176.44},
+{"Date":"01d21d14 10:24","Description":"Ginn Library Printers","Amount":-1.05,"Balance":175.39},
+{"Date":"01d21d14 10:39","Description":"Mugar Cafe POS","Amount":-1.85,"Balance":173.54},
+{"Date":"01d21d14 18:40","Description":"Commons Deli & Grill POS","Amount":-5.7,"Balance":167.84},
+{"Date":"01d22d14 17:52","Description":"Commons Deli & Grill POS","Amount":-1.45,"Balance":166.39},
+{"Date":"01d22d14 19:27","Description":"Tisch Library Printers","Amount":-1.5,"Balance":164.89},
+{"Date":"01d22d14 19:30","Description":"Tower Cafe POS","Amount":-2.99,"Balance":161.9},
+{"Date":"01d27d14 17:50","Description":"Commons Deli & Grill POS","Amount":-1.45,"Balance":160.45},
+{"Date":"01d28d14 13:23","Description":"Tisch Library Copiers","Amount":-0.3,"Balance":160.15},
+{"Date":"01d29d14 11:52","Description":"Commons Deli & Grill POS","Amount":-3.75,"Balance":156.4},
+{"Date":"01d30d14 13:21","Description":"Tisch Library Copiers","Amount":-0.3,"Balance":156.1},
+{"Date":"01d31d14 15:14","Description":"Commons Deli & Grill POS","Amount":-1.3,"Balance":154.8},
+{"Date":"02d02d14 11:03","Description":"Hotung Cafe POS","Amount":-1.85,"Balance":152.95},
+{"Date":"02d02d14 13:11","Description":"Tower Cafe POS","Amount":-1.85,"Balance":151.1},
+{"Date":"02d03d14 11:57","Description":"Commons Deli & Grill POS","Amount":-5.65,"Balance":145.45},
+{"Date":"02d04d14 13:20","Description":"Tisch Library Copiers","Amount":-0.25,"Balance":145.2},
+{"Date":"02d06d14 13:25","Description":"Tisch Library Copiers","Amount":-0.25,"Balance":144.95},
+{"Date":"02d06d14 16:23","Description":"Brown & Brew POS","Amount":-8.75,"Balance":136.2},
+{"Date":"02d07d14 15:49","Description":"Commons Deli & Grill POS","Amount":-5.65,"Balance":130.55},
+{"Date":"02d08d14 13:00","Description":"Campus Center The REZ","Amount":-1.75,"Balance":128.8},
+{"Date":"02d08d14 14:42","Description":"Commons Deli & Grill POS","Amount":-4.5,"Balance":124.3},
+{"Date":"02d10d14 12:15","Description":"Commons Deli & Grill POS","Amount":-5.5,"Balance":118.8},
+{"Date":"02d11d14 16:18","Description":"Commons Deli & Grill POS","Amount":-1.3,"Balance":117.5},
+{"Date":"02d12d14 10:25","Description":"Tisch Library Printers","Amount":-0.45,"Balance":117.05},
+{"Date":"02d12d14 12:06","Description":"Tower Cafe POS","Amount":-4.84,"Balance":112.21},
+{"Date":"02d12d14 17:56","Description":"Commons Deli & Grill POS","Amount":-1.45,"Balance":110.76},
+{"Date":"02d12d14 22:00","Description":"Commons Deli & Grill POS","Amount":-7.29,"Balance":103.47},
+{"Date":"02d13d14 13:28","Description":"Tisch Library Printers","Amount":-0.15,"Balance":103.32},
+{"Date":"02d14d14 14:47","Description":"Commons Deli & Grill POS","Amount":-5.8,"Balance":97.52},
+{"Date":"02d18d14 13:34","Description":"Tisch Library Printers","Amount":-0.25,"Balance":97.27},
+{"Date":"02d18d14 13:34","Description":"Tisch Library Printers","Amount":-0.3,"Balance":96.97},
+{"Date":"02d18d14 16:13","Description":"Tisch Library Printers","Amount":-0.1,"Balance":96.87},
+{"Date":"02d18d14 16:22","Description":"Tisch Library Copiers","Amount":-0.1,"Balance":96.77},
+{"Date":"02d19d14 10:31","Description":"Tisch Library Printers","Amount":-0.45,"Balance":96.32},
+{"Date":"02d19d14 12:16","Description":"Tower Cafe POS","Amount":-5.25,"Balance":91.07},
+{"Date":"02d20d14 11:57","Description":"Commons Deli & Grill POS","Amount":-5.02,"Balance":86.05},
+{"Date":"02d20d14 17:52","Description":"Commons Deli & Grill POS","Amount":-1.45,"Balance":84.6},
+{"Date":"02d21d14 11:18","Description":"Campus Center The REZ","Amount":-1.75,"Balance":82.85},
+{"Date":"02d21d14 14:36","Description":"Commons Deli & Grill POS","Amount":-4.5,"Balance":78.35},
+{"Date":"02d24d14 11:52","Description":"Commons Deli & Grill POS","Amount":-5.02,"Balance":73.33},
+{"Date":"02d24d14 17:48","Description":"Commons Deli & Grill POS","Amount":-1.45,"Balance":71.88},
+{"Date":"02d24d14 20:44","Description":"Tisch Library Copiers","Amount":-0.1,"Balance":71.78},
+{"Date":"02d24d14 20:53","Description":"Tisch Library Copiers","Amount":-10.1,"Balance":61.68},
+{"Date":"02d25d14 16:11","Description":"Commons Deli & Grill POS","Amount":-4.25,"Balance":57.43},
+{"Date":"02d25d14 23:56","Description":"Tisch Library Printers","Amount":-2.4,"Balance":55.03},
+{"Date":"02d26d14 0:06","Description":"Tisch Library Printers","Amount":-1.5,"Balance":53.53},
+{"Date":"02d26d14 0:08","Description":"Tisch Library Printers","Amount":-0.1,"Balance":53.43},
+{"Date":"02d26d14 0:12","Description":"Tisch Library Printers","Amount":-0.4,"Balance":53.03},
+{"Date":"02d26d14 0:13","Description":"Tisch Library Printers","Amount":-1.6,"Balance":51.43},
+{"Date":"02d26d14 8:47","Description":"Tisch Library Printers","Amount":-0.3,"Balance":51.13},
+{"Date":"02d27d14 13:22","Description":"Ginn Library Printers","Amount":-0.6,"Balance":50.53},
+{"Date":"03d03d14 11:55","Description":"Mugar Cafe POS","Amount":-4.84,"Balance":45.69},
+{"Date":"03d03d14 17:55","Description":"Commons Deli & Grill POS","Amount":-9.15,"Balance":36.54},
+{"Date":"03d05d14 12:11","Description":"Commons Deli & Grill POS","Amount":-11.3,"Balance":25.24},
+{"Date":"03d05d14 14:23","Description":"Tower Cafe POS","Amount":-1.45,"Balance":23.79},
+{"Date":"03d06d14 13:27","Description":"Tisch Library Copiers","Amount":-0.15,"Balance":23.64},
+{"Date":"03d09d14 11:57","Description":"Commons Deli & Grill POS","Amount":-7.4,"Balance":16.24},
+{"Date":"03d10d14 11:53","Description":"Commons Deli & Grill POS","Amount":-7.09,"Balance":9.15},
+{"Date":"03d11d14 13:22","Description":"Tisch Library Copiers","Amount":-2.4,"Balance":6.75},
+{"Date":"03d25d14 13:28","Description":"Tisch Library Copiers","Amount":-0.4,"Balance":6.35},
+{"Date":"03d27d14 13:25","Description":"Tisch Library Printers","Amount":-0.3,"Balance":6.05},
+{"Date":"04d03d14 4:01","Description":"Adjustment - Deposit","Amount":50,"Balance":56.05},
+{"Date":"04d03d14 13:24","Description":"Tisch Library Copiers","Amount":-3.3,"Balance":52.75},
+{"Date":"04d03d14 13:24","Description":"Tisch Library Copiers","Amount":-1.5,"Balance":51.25},
+{"Date":"11/1/14 14:04","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":90},
+{"Date":"11/3/14 20:09","Description":"Carmichael Hall Dining","Amount":-1,"Balance":89},
+{"Date":"11/4/14 12:46","Description":"Carmichael Hall Dining","Amount":-1,"Balance":88},
+{"Date":"11/4/14 18:18","Description":"Carmichael Hall Dining","Amount":-1,"Balance":87},
+{"Date":"11/5/14 17:48","Description":"Carmichael Hall Dining","Amount":-1,"Balance":86},
+{"Date":"11/6/14 12:10","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":85},
+{"Date":"11/6/14 14:56","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":84},
+{"Date":"11/6/14 18:30","Description":"Carmichael Hall Dining","Amount":-1,"Balance":83},
+{"Date":"11/7/14 12:37","Description":"Carmichael Hall Dining","Amount":-1,"Balance":82},
+{"Date":"11/7/14 17:39","Description":"Carmichael Hall Dining","Amount":-1,"Balance":81},
+{"Date":"11/8/14 12:35","Description":"Carmichael Hall Dining","Amount":-1,"Balance":80},
+{"Date":"11/9/14 18:04","Description":"Carmichael Hall Dining","Amount":-1,"Balance":79},
+{"Date":"11/10/14 10:36","Description":"Carmichael Hall Dining","Amount":-1,"Balance":78},
+{"Date":"11/10/14 14:38","Description":"Carmichael Hall Dining","Amount":-1,"Balance":77},
+{"Date":"11/11/14 13:56","Description":"Carmichael Hall Dining","Amount":-1,"Balance":76},
+{"Date":"11/11/14 18:19","Description":"Carmichael Hall Dining","Amount":-1,"Balance":75},
+{"Date":"11/12/14 11:56","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":74},
+{"Date":"11/12/14 19:01","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":73},
+{"Date":"11/13/14 17:22","Description":"Carmichael Hall Dining","Amount":-1,"Balance":72},
+{"Date":"11/14/14 12:42","Description":"Carmichael Hall Dining","Amount":-1,"Balance":71},
+{"Date":"11/14/14 17:07","Description":"Carmichael Hall Dining","Amount":-1,"Balance":70},
+{"Date":"11/15/14 17:30","Description":"Carmichael Hall Dining","Amount":-1,"Balance":69},
+{"Date":"11/16/14 13:07","Description":"Carmichael Hall Dining","Amount":-1,"Balance":68},
+{"Date":"11/16/14 18:19","Description":"Carmichael Hall Dining","Amount":-1,"Balance":67},
+{"Date":"11/17/14 11:07","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":66},
+{"Date":"11/17/14 11:07","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":65},
+{"Date":"11/17/14 17:39","Description":"Carmichael Hall Dining","Amount":-1,"Balance":64},
+{"Date":"11/18/14 12:04","Description":"Carmichael Hall Dining","Amount":-1,"Balance":63},
+{"Date":"11/18/14 17:40","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":62},
+{"Date":"11/19/14 12:16","Description":"Carmichael Hall Dining","Amount":-1,"Balance":61},
+{"Date":"11/19/14 17:22","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":60},
+{"Date":"11/20/14 15:06","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":59},
+{"Date":"11/20/14 17:23","Description":"Carmichael Hall Dining","Amount":-1,"Balance":58},
+{"Date":"11/21/14 17:01","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":57},
+{"Date":"11/21/14 18:00","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":56},
+{"Date":"11/22/14 12:00","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":55},
+{"Date":"11/22/14 12:00","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":54},
+{"Date":"11/23/14 13:47","Description":"Carmichael Hall Dining","Amount":-1,"Balance":53},
+{"Date":"11/23/14 17:45","Description":"Carmichael Hall Dining","Amount":-1,"Balance":52},
+{"Date":"11/24/14 11:10","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":51},
+{"Date":"11/24/14 17:43","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":50},
+{"Date":"11/24/14 20:32","Description":"Carmichael Hall Dining","Amount":-1,"Balance":49},
+{"Date":"11/25/14 12:42","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":48},
+{"Date":"11/25/14 14:55","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":47},
+{"Date":"11/25/14 17:29","Description":"Carmichael Hall Dining","Amount":-1,"Balance":46},
+{"Date":"11/25/14 18:29","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":45},
+{"Date":"11/26/14 12:07","Description":"Carmichael Hall Dining","Amount":-1,"Balance":44},
+{"Date":"11/26/14 17:21","Description":"Carmichael Hall Dining","Amount":-1,"Balance":43},
+{"Date":"12/2/14 12:22","Description":"Carmichael Hall Dining","Amount":-1,"Balance":42},
+{"Date":"12/2/14 14:57","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":41},
+{"Date":"12/2/14 17:55","Description":"Carmichael Hall Dining","Amount":-1,"Balance":40},
+{"Date":"12/3/14 17:55","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":39},
+{"Date":"12/3/14 18:55","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":38},
+{"Date":"12/4/14 12:18","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":37},
+{"Date":"12/4/14 17:26","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":36},
+{"Date":"12/5/14 16:54","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":35},
+{"Date":"12/5/14 17:09","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":34},
+{"Date":"12/6/14 14:26","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":33},
+{"Date":"12/7/14 11:32","Description":"Carmichael Hall Dining","Amount":-1,"Balance":32},
+{"Date":"12/7/14 17:43","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":31},
+{"Date":"12/7/14 17:43","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":30},
+{"Date":"12/8/14 12:18","Description":"Carmichael Hall Dining","Amount":-1,"Balance":29},
+{"Date":"12/8/14 17:46","Description":"Carmichael Hall Dining","Amount":-1,"Balance":28},
+{"Date":"12/9/14 12:52","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":27},
+{"Date":"12/9/14 17:16","Description":"Carmichael Hall Dining","Amount":-1,"Balance":26},
+{"Date":"12/9/14 19:23","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":25},
+{"Date":"12/10/14 13:26","Description":"Carmichael Hall Dining","Amount":-1,"Balance":24},
+{"Date":"12/10/14 17:35","Description":"Carmichael Hall Dining","Amount":-1,"Balance":23},
+{"Date":"12/10/14 18:20","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":22},
+{"Date":"12/11/14 13:58","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":21},
+{"Date":"12/11/14 14:31","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":20},
+{"Date":"12/11/14 17:01","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":19},
+{"Date":"12/11/14 17:02","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":18},
+{"Date":"12/12/14 11:16","Description":"Carmichael Hall Dining","Amount":-1,"Balance":17},
+{"Date":"12/12/14 13:43","Description":"Carmichael Hall Dining","Amount":-1,"Balance":16},
+{"Date":"12/12/14 17:26","Description":"Carmichael Hall Dining","Amount":-1,"Balance":15},
+{"Date":"12/14/14 14:08","Description":"Carmichael Hall Dining","Amount":-1,"Balance":14},
+{"Date":"12/14/14 14:08","Description":"Carmichael Hall Dining","Amount":-1,"Balance":13},
+{"Date":"1/10/14 23:36","Description":"Adjustment - Withdrawl","Amount":-13,"Balance":0},
+{"Date":"1/13/14 16:45","Description":"Adjustment - Reset","Amount":160,"Balance":160},
+{"Date":"1/14/14 12:30","Description":"Carmichael Hall Dining","Amount":-1,"Balance":159},
+{"Date":"1/15/14 12:52","Description":"Carmichael Hall Dining","Amount":-1,"Balance":158},
+{"Date":"1/15/14 17:54","Description":"Carmichael Hall Dining","Amount":-1,"Balance":157},
+{"Date":"1/16/14 17:17","Description":"Carmichael Hall Dining","Amount":-1,"Balance":156},
+{"Date":"1/17/14 13:57","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":155},
+{"Date":"1/17/14 18:02","Description":"Carmichael Hall Dining","Amount":-1,"Balance":154},
+{"Date":"1/18/14 13:33","Description":"Carmichael Hall Dining","Amount":-1,"Balance":153},
+{"Date":"1/18/14 18:05","Description":"Carmichael Hall Dining","Amount":-1,"Balance":152},
+{"Date":"1/20/14 12:13","Description":"Carmichael Hall Dining","Amount":-1,"Balance":151},
+{"Date":"1/21/14 12:19","Description":"Carmichael Hall Dining","Amount":-1,"Balance":150},
+{"Date":"1/21/14 18:16","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":149},
+{"Date":"1/22/14 12:08","Description":"Carmichael Hall Dining","Amount":-1,"Balance":148},
+{"Date":"1/24/14 12:49","Description":"Carmichael Hall Dining","Amount":-1,"Balance":147},
+{"Date":"1/25/14 14:38","Description":"Carmichael Hall Dining","Amount":-1,"Balance":146},
+{"Date":"1/26/14 14:19","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":145},
+{"Date":"1/27/14 17:51","Description":"Carmichael Hall Dining","Amount":-1,"Balance":144},
+{"Date":"1/28/14 18:14","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":143},
+{"Date":"1/29/14 13:35","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":142},
+{"Date":"1/29/14 18:27","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":141},
+{"Date":"1/30/14 18:23","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":140},
+{"Date":"1/31/14 12:04","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":139},
+{"Date":"1/31/14 16:45","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":138},
+{"Date":"2/1/14 17:56","Description":"Carmichael Hall Dining","Amount":-1,"Balance":137},
+{"Date":"2/2/14 13:20","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":136},
+{"Date":"2/3/14 17:01","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":135},
+{"Date":"2/3/14 17:45","Description":"Carmichael Hall Dining","Amount":-1,"Balance":134},
+{"Date":"2/4/14 12:02","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":133},
+{"Date":"2/4/14 17:33","Description":"Carmichael Hall Dining","Amount":-1,"Balance":132},
+{"Date":"2/5/14 18:28","Description":"Carmichael Hall Dining","Amount":-1,"Balance":131},
+{"Date":"2/6/14 12:08","Description":"Carmichael Hall Dining","Amount":-1,"Balance":130},
+{"Date":"2/6/14 12:40","Description":"Carmichael Hall Dining","Amount":-1,"Balance":129},
+{"Date":"2/6/14 17:46","Description":"Carmichael Hall Dining","Amount":-1,"Balance":128},
+{"Date":"2/8/14 12:15","Description":"Carmichael Hall Dining","Amount":-1,"Balance":127},
+{"Date":"2/9/14 12:40","Description":"Carmichael Hall Dining","Amount":-1,"Balance":126},
+{"Date":"2/9/14 17:51","Description":"Carmichael Hall Dining","Amount":-1,"Balance":125},
+{"Date":"2/10/14 16:27","Description":"Carmichael Hall Dining","Amount":-1,"Balance":124},
+{"Date":"2/11/14 12:06","Description":"Carmichael Hall Dining","Amount":-1,"Balance":123},
+{"Date":"2/11/14 19:17","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":122},
+{"Date":"2/12/14 11:50","Description":"Carmichael Hall Dining","Amount":-1,"Balance":121},
+{"Date":"2/12/14 18:22","Description":"Carmichael Hall Dining","Amount":-1,"Balance":120},
+{"Date":"2/13/14 11:57","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":119},
+{"Date":"2/13/14 17:22","Description":"Carmichael Hall Dining","Amount":-1,"Balance":118},
+{"Date":"2/14/14 13:04","Description":"Carmichael Hall Dining","Amount":-1,"Balance":117},
+{"Date":"2/14/14 18:16","Description":"Carmichael Hall Dining","Amount":-1,"Balance":116},
+{"Date":"2/15/14 11:46","Description":"Carmichael Hall Dining","Amount":-1,"Balance":115},
+{"Date":"2/16/14 17:19","Description":"Carmichael Hall Dining","Amount":-1,"Balance":114},
+{"Date":"2/18/14 12:31","Description":"Carmichael Hall Dining","Amount":-1,"Balance":113},
+{"Date":"2/18/14 17:11","Description":"Carmichael Hall Dining","Amount":-1,"Balance":112},
+{"Date":"2/19/14 18:16","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":111},
+{"Date":"2/19/14 21:52","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":110},
+{"Date":"2/20/14 17:42","Description":"Carmichael Hall Dining","Amount":-1,"Balance":109},
+{"Date":"2/20/14 17:42","Description":"Carmichael Hall Dining","Amount":-1,"Balance":108},
+{"Date":"2/21/14 12:46","Description":"Carmichael Hall Dining","Amount":-1,"Balance":107},
+{"Date":"2/24/14 13:23","Description":"Carmichael Hall Dining","Amount":-1,"Balance":106},
+{"Date":"2/24/14 17:26","Description":"Carmichael Hall Dining","Amount":-1,"Balance":105},
+{"Date":"2/25/14 17:57","Description":"Carmichael Hall Dining","Amount":-1,"Balance":104},
+{"Date":"2/26/14 17:16","Description":"Carmichael Hall Dining","Amount":-1,"Balance":103},
+{"Date":"2/27/14 12:04","Description":"Carmichael Hall Dining","Amount":-1,"Balance":102},
+{"Date":"2/27/14 19:01","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":101},
+{"Date":"2/28/14 17:01","Description":"Carmichael Hall Dining","Amount":-1,"Balance":100},
+{"Date":"3/1/14 11:09","Description":"Carmichael Hall Dining","Amount":-1,"Balance":99},
+{"Date":"3/1/14 17:48","Description":"Carmichael Hall Dining","Amount":-1,"Balance":98},
+{"Date":"3/2/14 13:03","Description":"Carmichael Hall Dining","Amount":-1,"Balance":97},
+{"Date":"3/2/14 17:36","Description":"Carmichael Hall Dining","Amount":-1,"Balance":96},
+{"Date":"3/3/14 17:34","Description":"Carmichael Hall Dining","Amount":-1,"Balance":95},
+{"Date":"3/4/14 12:02","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":94},
+{"Date":"3/4/14 17:36","Description":"Carmichael Hall Dining","Amount":-1,"Balance":93},
+{"Date":"3/6/14 18:11","Description":"Carmichael Hall Dining","Amount":-1,"Balance":92},
+{"Date":"3/6/14 18:22","Description":"Carmichael Hall Dining","Amount":-1,"Balance":91},
+{"Date":"3/6/14 20:16","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":90},
+{"Date":"3/8/14 19:24","Description":"Carmichael Hall Dining","Amount":-1,"Balance":89},
+{"Date":"3/9/14 12:24","Description":"Carmichael Hall Dining","Amount":-1,"Balance":88},
+{"Date":"3/10/14 17:33","Description":"Carmichael Hall Dining","Amount":-1,"Balance":87},
+{"Date":"3/11/14 12:00","Description":"Carmichael Hall Dining","Amount":-1,"Balance":86},
+{"Date":"3/11/14 17:26","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":85},
+{"Date":"3/13/14 12:23","Description":"Carmichael Hall Dining","Amount":-1,"Balance":84},
+{"Date":"3/13/14 19:47","Description":"Carmichael Hall Dining","Amount":-1,"Balance":83},
+{"Date":"3/14/14 18:32","Description":"Carmichael Hall Dining","Amount":-1,"Balance":82},
+{"Date":"3/23/14 17:58","Description":"Carmichael Hall Dining","Amount":-1,"Balance":81},
+{"Date":"3/23/14 17:58","Description":"Carmichael Hall Dining","Amount":-1,"Balance":80},
+{"Date":"3/24/14 17:26","Description":"Carmichael Hall Dining","Amount":-1,"Balance":79},
+{"Date":"3/24/14 17:26","Description":"Carmichael Hall Dining","Amount":-1,"Balance":78},
+{"Date":"3/25/14 12:54","Description":"Carmichael Hall Dining","Amount":-1,"Balance":77},
+{"Date":"3/25/14 12:54","Description":"Carmichael Hall Dining","Amount":-1,"Balance":76},
+{"Date":"3/25/14 17:34","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":75},
+{"Date":"3/26/14 17:34","Description":"Carmichael Hall Dining","Amount":-1,"Balance":74},
+{"Date":"3/27/14 11:57","Description":"Carmichael Hall Dining","Amount":-1,"Balance":73},
+{"Date":"3/28/14 14:04","Description":"Carmichael Hall Dining","Amount":-1,"Balance":72},
+{"Date":"3/28/14 19:51","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":71},
+{"Date":"3/29/14 13:02","Description":"Carmichael Hall Dining","Amount":-1,"Balance":70},
+{"Date":"3/29/14 17:51","Description":"Carmichael Hall Dining","Amount":-1,"Balance":69},
+{"Date":"3/30/14 12:51","Description":"Carmichael Hall Dining","Amount":-1,"Balance":68},
+{"Date":"3/30/14 18:29","Description":"Carmichael Hall Dining","Amount":-1,"Balance":67},
+{"Date":"3/31/14 13:38","Description":"Carmichael Hall Dining","Amount":-1,"Balance":66},
+{"Date":"3/31/14 17:56","Description":"Carmichael Hall Dining","Amount":-1,"Balance":65},
+{"Date":"4/1/14 16:23","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":64},
+{"Date":"4/1/14 17:11","Description":"Carmichael Hall Dining","Amount":-1,"Balance":63},
+{"Date":"4/2/14 12:15","Description":"Carmichael Hall Dining","Amount":-1,"Balance":62},
+{"Date":"4/2/14 21:18","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":61},
+{"Date":"4/3/14 12:46","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":60},
+{"Date":"4/3/14 17:35","Description":"Carmichael Hall Dining","Amount":-1,"Balance":59},
+{"Date":"4/4/14 22:48","Description":"Commons Deli & Grill POS","Amount":-1,"Balance":58},
+{"Date":"4/5/14 17:25","Description":"Carmichael Hall Dining","Amount":-1,"Balance":57},
+{"Date":"4/7/14 16:50","Description":"Carmichael Hall Dining","Amount":-1,"Balance":56},
+{"Date":"4/8/14 17:58","Description":"Carmichael Hall Dining","Amount":-1,"Balance":55},
+{"Date":"4/9/14 18:13","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":54},
+{"Date":"4/10/14 11:58","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":53},
+{"Date":"4/11/14 13:00","Description":"Carmichael Hall Dining","Amount":-1,"Balance":52},
+{"Date":"4/11/14 15:41","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":51},
+{"Date":"4/12/14 12:56","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":50},
+{"Date":"4/12/14 19:19","Description":"Carmichael Hall Dining","Amount":-1,"Balance":49},
+{"Date":"4/12/14 23:37","Description":"Commons Deli & Grill POS","Amount":-1,"Balance":48},
+{"Date":"4/13/14 17:56","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":47},
+{"Date":"4/14/14 16:53","Description":"Adjustment - Withdrawl","Amount":-1,"Balance":46},
+{"Date":"4/14/14 17:35","Description":"Carmichael Hall Dining","Amount":-1,"Balance":45},
+{"Date":"4/15/14 12:26","Description":"Carmichael Hall Dining","Amount":-1,"Balance":44},
+{"Date":"4/15/14 17:35","Description":"Carmichael Hall Dining","Amount":-1,"Balance":43},
+{"Date":"4/16/14 17:00","Description":"Carmichael Rdr Trans","Amount":-1,"Balance":42}]
+
+
+
+data = JSONdata;
+for (i = 0; i < data.length; i++) {
+    if (data[i]['Description'] == 'Dewick/MacPhie Dining') {
+        dewick++;}
+    if (data[i]['Description'] == 'Carmichael Hall Dining') {
+        carmichael++;
+    }
+    if (data[i]['Description'] == 'Hodgdon Good-To-Go') {
+        hodgdon++;
+    }
+    if (data[i]['Description'] == 'Brown & Brew POS') {
+        bnb++;
+    }
+    if (data[i]['Description'] == 'Tower Cafe POS') {
+        tower++;
+    }
+    if (data[i]['Description'] == 'Mugar Cafe POS') {
+        mugar++;
+    }
+    if (data[i]['Description'] == 'Campus Center The REZ' || data[i]['Description'] == 'Commons Deli & Grill POS' || data[i]['Description'] == 'Hotung Cafe POS') {
+        cc++;
+    }
+}
+
+var eat_pieData = [
+    {value: dewick, color:"#F38630"},
+    {value : carmichael, color : "#5AD75A"},
+    {value : hodgdon, color : "#69D2E7"},
+    {value: bnb, color:"#FFCC00"},
+    {value : tower, color : "#CC66FF"},
+    {value : mugar, color : "#FF5959"},
+    {value : cc, color : "#3385FF"}
+];
+
+var myPie = new Chart(document.getElementById("eat_pie").getContext("2d")).Pie(eat_pieData);
+
+function makeDLegendColor(id, color) {
+    var dcanvas = document.getElementById(id);
+    var legcont = dcanvas.getContext('2d');
+    legcont.beginPath();
+    legcont.rect(1, 1, 30, 15);
+        legcont.fillStyle = color;
+    legcont.fill();
+};
+
+makeDLegendColor('dlegend1', '#F38630');
+makeDLegendColor('dlegend2', '#5AD75A');
+makeDLegendColor('dlegend3', '#69D2E7');
+makeDLegendColor('dlegend4', '#FFCC00');
+makeDLegendColor('dlegend5', '#CC66FF');
+makeDLegendColor('dlegend6', '#FF5959');
+makeDLegendColor('dlegend7', '#3385FF');
+    
+var meal = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+var cash = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+
+for (i = 0; i < data.length; i++) {
+    var date = data[i]['Date'];
+    var month;
+    if (date.search('d') != -1){
+        month = date.split('d') - 1;
+    }
+    else {
+        month = date.split('/') - 1;
+    }
+
+    if (data[i]['Description'] == 'Dewick/MacPhie Dining' || data[i]['Description'] == 'Carmichael Hall Dining' || data[i]['Description'] == 'Hodgdon Good-To-Go') {
+        meal[month - 1] = meal[month - 1] + Math.abs(data[i]['Amount']);
+    }
+    if (data[i]['Description'] == 'Tower Cafe POS' || data[i]['Description'] == 'Mugar Cafe POS' || data[i]['Description'] == 'Brown & Brew POS' || data[i]['Description'] == 'Campus Center The REZ' || data[i]['Description'] == 'Commons Deli & Grill POS' || data[i]['Description'] == 'Hotung Cafe POS') {
+        cash[month - 1] = cash[month - 1] + Math.abs(data[i]['Amount']);
+    }
+}
+
+var date1 = data[data.length - 1]['Date'];
+var month1 = date1.split('d') - 1;
+var m2inc  = [];
+m2inc.unshift(month1);
+for (i = 0; i < 5; i++) {
+    if (month1 > 0) {
+        m2inc.unshift(month1 -1);
+        month1--;
+    }
+    else {
+        month1 = month1 + 11;
+        m2inc.unshift(month1);
+    }
+}
+
+var barChartData = {
+    labels : [m2inc[0]+1, m2inc[1]+1, m2inc[2]+1, m2inc[3]+1, m2inc[4]+1, m2inc[5]+1],
+    datasets : [
+        {
+            fillColor : "#F38630",
+            strokeColor : "#F38630",
+            data : [meal[m2inc[0]], meal[m2inc[1]], meal[m2inc[2]], meal[m2inc[3]], meal[m2inc[4]], meal[m2inc[5]]]
+        },
+        {
+            fillColor : "#5AD75A",
+            strokeColor : "#5AD75A",
+            data : [cash[m2inc[0]], cash[m2inc[1]], cash[m2inc[2]], cash[m2inc[3]], cash[m2inc[4]], cash[m2inc[5]]]
+        },
+    ]
+}
+
+var myLine = new Chart(document.getElementById("eat_bar").getContext("2d")).Bar(barChartData);
+
+var infowindow = new google.maps.InfoWindow();
+var myLat = 0;
+var myLng = 0;
+
+function initialize() {
+    var eat_canvas = document.getElementById('eat_canvas');
+    var mapOptions = {
+            center: new google.maps.LatLng(42.406800, -71.119637),
+            zoom: 15,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+    var map = new google.maps.Map(eat_canvas, mapOptions);
+
+    var posDewick = new google.maps.LatLng(42.405507, -71.120998);
+    var Dewick = new google.maps.Marker({
+        position: posDewick,
+        map: map,
+        title: 'Dewick'
+    });
+
+    var posCarm = new google.maps.LatLng(42.409198, -71.122693);
+    var Carmichael = new google.maps.Marker({
+        position: posCarm,
+        map: map,
+        title: 'Carmichael'
+    });
+
+    var posHodgdon = new google.maps.LatLng(42.405538, -71.122071);
+    var Hodgdon = new google.maps.Marker({
+        position: posHodgdon,
+        map: map,
+        title: 'Hodgdon'
+    });
+
+    var posBnB = new google.maps.LatLng(42.406905, -71.116630);
+    var BnB = new google.maps.Marker({
+        position: posBnB,
+        map: map,
+        title: 'Brown and Brew'
+    });
+
+    var posTower = new google.maps.LatLng(42.406414, -71.118939);
+    var Tower = new google.maps.Marker({
+        position: posTower,
+        map: map,
+        title: 'Tower Cafe'
+    });
+
+    var posMugar = new google.maps.LatLng(42.408032, -71.121640);
+    var Mugar = new google.maps.Marker({
+        position: posMugar,
+        map: map,
+        title: 'Mugar Cafe'
+    });
+
+    var posCC = new google.maps.LatLng(42.405683, -71.119993);
+    var CC = new google.maps.Marker({
+        position: posCC,
+        map: map,
+        title: 'Campus Center'
+    });
+
+    google.maps.event.addListener(Dewick, 'click', function() {
+        infowindow.setContent('Dewick'); 
+        infowindow.open(map, this);
+    });
+
+    google.maps.event.addListener(Carmichael, 'click', function() {
+        infowindow.setContent('Carmichael'); 
+        infowindow.open(map, this);
+    });
+
+    google.maps.event.addListener(Hodgdon, 'click', function() {
+        infowindow.setContent('Hodgdon'); 
+        infowindow.open(map, this);
+    });
+
+    google.maps.event.addListener(BnB, 'click', function() {
+        infowindow.setContent('Brown and Brew'); 
+        infowindow.open(map, this);
+    });
+
+    google.maps.event.addListener(Tower, 'click', function() {
+        infowindow.setContent('Tower Cafe'); 
+        infowindow.open(map, this);
+    });
+
+    google.maps.event.addListener(Mugar, 'click', function() {
+        infowindow.setContent('Mugar Cafe'); 
+        infowindow.open(map, this);
+    });
+
+    google.maps.event.addListener(CC, 'click', function() {
+        infowindow.setContent('Campus Center'); 
+        infowindow.open(map, this);
+    });
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            myLat = position.coords.latitude;
+            myLng = position.coords.longitude;
+        });
+        var posMe = new google.maps.LatLng(myLat, myLng);
+        var me = new google.maps.Marker({
+            position: posMe,
+            map: map,
+            title: 'My Location'
+        });
+        google.maps.event.addListener(me, 'click', function() {
+            infowindow.setContent('My location');
+            infowindow.open(map, this);
+        });
+    }
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+
+
+BKFST_CONST = 6.68;
+LUNCH_CONST = 11.03;
+DIN_CONST = 13.22;
+DAYS_CONST = 112;
+
+function initDining()
+{
+    determineEfficiency();
+}
+function dollarAmount(){
+    var breakfast;
+    var lunch;
+    var dinner;
+    var dollarEquivalence;
+
+
+    for ( var i = 0; i < results.length-1; i++){
+        if ((parsed[i]["Description"] == "Hodgdon Good-To-Go" || parsed[i]["Description"]
+             == "Carmichael Hall Dining" || parsed[i]["Description"] == "Dewick/MacPhie Dining"
+             || parsed[i]["Description"] == "Adjustment - Withdrawl" || parsed[i]["Description"] == 
+              "Commons Deli & Grill POS") && (parsed[i]["Amount"] == -1)) {
+
+            var strDate = parsed[i]["Date"];
+            var dateParts = strDate.split(" ");
+            var time = dateParts[1];
+            var timeParts = time.split(":");
+            var hour = Number(timeParts[0]);
+            
+            if (hour < 11){
+                breakfast = breakfast + 1;
+            }
+            else if( hour >= 11 && hour < 17){
+                lunch = lunch + 1;
+            }
+            else{
+                dinner = dinner + 1;
+            }
+        }
+    }
+
+    dollarEquivalence = BKFST_CONST * breakfast + LUNCH_CONST * lunch + DIN_CONST * dinner;
+    return dollarEquivalence;
+}
+
+function determineEfficiency()
+{
+    console.log("i'm in the determineEfficiency function!!!");
+    var value = dollarAmount() * scaleMonths();
+    var MPPrice = mealPlanEquivalence(mealPlan);
+    if (value > MPPrice){
+        var output = document.getElementById("message");
+        output.innerHTML = "You are using your meal plan efficiently!";
+
+        var output1 = document.getElementById("message1");
+        output1.innerHTML = "The real value of the meals you in the Dining Halls is $" + value + ".  This means that the amount you are currently paying for your meal plan is less than what you would pay if you used JumboCash for every meal. Keep up the good work!";
+    }
+    else if (value == MPPrice){
+        var output = document.getElementById("message");
+        output.innerHTML = "You are breaking even with your current meal plan.";
+
+        var output1 = document.getElementById("message1");
+        output1.innerHTML = "The real value of the meals you in the Dining Halls is $" + value + ". This means that the amount you are currently paying for your meal plan is equivalent to total value of all meals you have swiped in for.";
+    }
+    else{
+        var output = document.getElementById("message");
+        output.innerHTML = "You are currently inefficient with your meal plan usage.";
+
+        var output1 = document.getElementById("message1");
+        output1.innerHTML = "The real value of the meals you in the Dining Halls is $" + value + ". <br/>Suggestions for using your meal plan more efficiently: <br><ul><li> Try getting a smaller meal plan! You may not be using all of your meals.</li><li> Using a meal swipe for breakfast is more expensive than paying with JumboCash. Try using this as an alternative.</li></ul>"
+
+        
+    }
+}
+
+function mealPlanEquivalence(mealPlan)
+{
+    if (mealPlan == unlimited){
+        return 2776;
+    }
+    else if (mealPlan == 220){
+        return 2542;
+    }
+    else if (mealPlan == 160){
+        return 1849;
+    }
+    else if (mealPlan == 100){
+        return 1208;
+    }
+    else if (mealPlan == 80){
+        return 987;
+    }
+    else if (mealPlan == 40){
+        return 500;
+    }
+}
+//scale months function
+function scaleMonths()
+{
+    var numDays = 0;
+
+    for (var i = 0; results.length-1; i++){
+        var strDate = parsed["Date"];
+        var dateParts = strDate.split(" ");
+        var date = dateParts[0];
+        var monthPart;
+        var month;
+        var day;
+
+        if (date.search("d") != -1){
+            monthPart = date.split("d");
+        }
+        else{
+            monthPart = date.split("/");
+        }
+
+        month = monthPart[0];
+        day = monthPart[1];
+
+        if (!((month == 12 && day >= 20) && (month == 01 && day <= 13) && 
+               (month == 03 && day >= 15 && day <= 23) && (month == 05 && day >=11) && 
+               (month == 06) && (month == 07) && (month == 08 && day <= 26) && 
+               (month == 11 && day >= 26 && day <= 29))){
+            numDays++;
+        }
+    }
+
+    var scale = DAYS_CONST/numDays;
+    return scale;
+
+}
+</script>
+<script>
+JSONdata = [{"Date":"11d04d14 17:55","Description":"Ginn Library Printers","Amount":-0.1,"Balance":53.44},
+{"Date":"11d05d14 11:52","Description":"Commons Deli & Grill POS","Amount":-3.89,"Balance":49.55},
+{"Date":"11d06d14 10:27","Description":"Mugar Cafe POS","Amount":-1.85,"Balance":47.7},
+{"Date":"11d06d14 12:26","Description":"Commons Deli & Grill POS","Amount":-0.99,"Balance":46.71},
+{"Date":"11d07d14 11:41","Description":"Commons Deli & Grill POS","Amount":-3.78,"Balance":42.93},
+{"Date":"11d11d14 13:52","Description":"Campus Center The REZ","Amount":-1.75,"Balance":41.18},
+{"Date":"11d12d14 11:40","Description":"Commons Deli & Grill POS","Amount":-5.09,"Balance":36.09},
+{"Date":"11d12d14 12:57","Description":"Tisch Library Printers","Amount":-0.1,"Balance":35.99},
+{"Date":"11d12d14 12:57","Description":"Tisch Library Printers","Amount":-0.1,"Balance":35.89},
+{"Date":"11d12d14 12:57","Description":"Tisch Library Printers","Amount":-0.1,"Balance":35.79},
+{"Date":"11d12d14 12:57","Description":"Tisch Library Printers","Amount":-1.1,"Balance":34.69},
+{"Date":"11d12d14 13:06","Description":"Tisch Library Printers","Amount":-0.1,"Balance":34.59},
+{"Date":"11d12d14 17:37","Description":"Commons Deli & Grill POS","Amount":-5.25,"Balance":29.34},
+{"Date":"11d13d14 10:21","Description":"Mugar Cafe POS","Amount":-1.85,"Balance":27.49},
+{"Date":"11d13d14 17:45","Description":"Commons Deli & Grill POS","Amount":-1.45,"Balance":26.04},
+{"Date":"11d14d14 12:00","Description":"Commons Deli & Grill POS","Amount":-3.89,"Balance":22.15},
+{"Date":"11d14d14 13:20","Description":"Ginn Library Printers","Amount":-1.2,"Balance":20.95},
+{"Date":"11d14d14 13:20","Description":"Ginn Library Printers","Amount":-1.6,"Balance":19.35},
+{"Date":"11d14d14 13:20","Description":"Ginn Library Printers","Amount":-0.7,"Balance":18.65},
+{"Date":"11d14d14 15:25","Description":"Tower Cafe POS","Amount":-0.99,"Balance":17.66},
+{"Date":"11d15d14 11:17","Description":"Campus Center The REZ","Amount":-1.75,"Balance":15.91},
+{"Date":"11d19d14 11:34","Description":"Commons Deli & Grill POS","Amount":-3.75,"Balance":12.16},
+{"Date":"11d21d14 13:21","Description":"Ginn Library Printers","Amount":-0.2,"Balance":11.96},
+{"Date":"11d22d14 9:22","Description":"Ginn Library Printers","Amount":-0.1,"Balance":11.86},
+{"Date":"11d25d14 14:44","Description":"Tisch Library Printers","Amount":-0.15,"Balance":11.71},
+{"Date":"12d03d14 10:19","Description":"Ginn Library Printers","Amount":-1.5,"Balance":10.21},
+{"Date":"12d03d14 15:03","Description":"Tisch Library Printers","Amount":-2,"Balance":8.21},
+{"Date":"12d03d14 15:04","Description":"Tisch Library Printers","Amount":-0.3,"Balance":7.91},
+{"Date":"12d05d14 13:23","Description":"Ginn Library Printers","Amount":-0.9,"Balance":7.01},
+{"Date":"12d14d14 20:21","Description":"Adjustment - Deposit","Amount":200,"Balance":207.01},
+{"Date":"12d14d14 20:49","Description":"LAUNDRY RICHARDSON HOUSE - Lau","Amount":-1.25,"Balance":205.76},
+{"Date":"12d16d14 9:44","Description":"Tisch Library Printers","Amount":-0.7,"Balance":205.06},
+{"Date":"12d16d14 14:08","Description":"Commons Deli & Grill POS","Amount":-4.23,"Balance":200.83},
+{"Date":"12d17d14 12:13","Description":"Tisch Library Printers","Amount":-0.6,"Balance":200.23},
+{"Date":"12d17d14 12:18","Description":"Commons Deli & Grill POS","Amount":-3.5,"Balance":196.73},
+{"Date":"01d15d14 14:35","Description":"Commons Deli & Grill POS","Amount":-1.8,"Balance":194.93},
+{"Date":"01d15d14 16:21","Description":"Bookstore Interface Medford","Amount":-12.64,"Balance":182.29},
+{"Date":"01d16d14 8:24","Description":"Tisch Library Printers","Amount":-0.1,"Balance":182.19},
+{"Date":"01d16d14 8:24","Description":"Tisch Library Printers","Amount":-0.1,"Balance":182.09},
+{"Date":"01d18d14 20:24","Description":"Commons Deli & Grill POS","Amount":-5.65,"Balance":176.44},
+{"Date":"01d21d14 10:24","Description":"Ginn Library Printers","Amount":-1.05,"Balance":175.39},
+{"Date":"01d21d14 10:39","Description":"Mugar Cafe POS","Amount":-1.85,"Balance":173.54},
+{"Date":"01d21d14 18:40","Description":"Commons Deli & Grill POS","Amount":-5.7,"Balance":167.84},
+{"Date":"01d22d14 17:52","Description":"Commons Deli & Grill POS","Amount":-1.45,"Balance":166.39},
+{"Date":"01d22d14 19:27","Description":"Tisch Library Printers","Amount":-1.5,"Balance":164.89},
+{"Date":"01d22d14 19:30","Description":"Tower Cafe POS","Amount":-2.99,"Balance":161.9},
+{"Date":"01d27d14 17:50","Description":"Commons Deli & Grill POS","Amount":-1.45,"Balance":160.45},
+{"Date":"01d28d14 13:23","Description":"Tisch Library Copiers","Amount":-0.3,"Balance":160.15},
+{"Date":"01d29d14 11:52","Description":"Commons Deli & Grill POS","Amount":-3.75,"Balance":156.4},
+{"Date":"01d30d14 13:21","Description":"Tisch Library Copiers","Amount":-0.3,"Balance":156.1},
+{"Date":"01d31d14 15:14","Description":"Commons Deli & Grill POS","Amount":-1.3,"Balance":154.8},
+{"Date":"02d02d14 11:03","Description":"Hotung Cafe POS","Amount":-1.85,"Balance":152.95},
+{"Date":"02d02d14 13:11","Description":"Tower Cafe POS","Amount":-1.85,"Balance":151.1},
+{"Date":"02d03d14 11:57","Description":"Commons Deli & Grill POS","Amount":-5.65,"Balance":145.45},
+{"Date":"02d04d14 13:20","Description":"Tisch Library Copiers","Amount":-0.25,"Balance":145.2},
+{"Date":"02d06d14 13:25","Description":"Tisch Library Copiers","Amount":-0.25,"Balance":144.95},
+{"Date":"02d06d14 16:23","Description":"Brown & Brew POS","Amount":-8.75,"Balance":136.2},
+{"Date":"02d07d14 15:49","Description":"Commons Deli & Grill POS","Amount":-5.65,"Balance":130.55},
+{"Date":"02d08d14 13:00","Description":"Campus Center The REZ","Amount":-1.75,"Balance":128.8},
+{"Date":"02d08d14 14:42","Description":"Commons Deli & Grill POS","Amount":-4.5,"Balance":124.3},
+{"Date":"02d10d14 12:15","Description":"Commons Deli & Grill POS","Amount":-5.5,"Balance":118.8},
+{"Date":"02d11d14 16:18","Description":"Commons Deli & Grill POS","Amount":-1.3,"Balance":117.5},
+{"Date":"02d12d14 10:25","Description":"Tisch Library Printers","Amount":-0.45,"Balance":117.05},
+{"Date":"02d12d14 12:06","Description":"Tower Cafe POS","Amount":-4.84,"Balance":112.21},
+{"Date":"02d12d14 17:56","Description":"Commons Deli & Grill POS","Amount":-1.45,"Balance":110.76},
+{"Date":"02d12d14 22:00","Description":"Commons Deli & Grill POS","Amount":-7.29,"Balance":103.47},
+{"Date":"02d13d14 13:28","Description":"Tisch Library Printers","Amount":-0.15,"Balance":103.32},
+{"Date":"02d14d14 14:47","Description":"Commons Deli & Grill POS","Amount":-5.8,"Balance":97.52},
+{"Date":"02d18d14 13:34","Description":"Tisch Library Printers","Amount":-0.25,"Balance":97.27},
+{"Date":"02d18d14 13:34","Description":"Tisch Library Printers","Amount":-0.3,"Balance":96.97},
+{"Date":"02d18d14 16:13","Description":"Tisch Library Printers","Amount":-0.1,"Balance":96.87},
+{"Date":"02d18d14 16:22","Description":"Tisch Library Copiers","Amount":-0.1,"Balance":96.77},
+{"Date":"02d19d14 10:31","Description":"Tisch Library Printers","Amount":-0.45,"Balance":96.32},
+{"Date":"02d19d14 12:16","Description":"Tower Cafe POS","Amount":-5.25,"Balance":91.07},
+{"Date":"02d20d14 11:57","Description":"Commons Deli & Grill POS","Amount":-5.02,"Balance":86.05},
+{"Date":"02d20d14 17:52","Description":"Commons Deli & Grill POS","Amount":-1.45,"Balance":84.6},
+{"Date":"02d21d14 11:18","Description":"Campus Center The REZ","Amount":-1.75,"Balance":82.85},
+{"Date":"02d21d14 14:36","Description":"Commons Deli & Grill POS","Amount":-4.5,"Balance":78.35},
+{"Date":"02d24d14 11:52","Description":"Commons Deli & Grill POS","Amount":-5.02,"Balance":73.33},
+{"Date":"02d24d14 17:48","Description":"Commons Deli & Grill POS","Amount":-1.45,"Balance":71.88},
+{"Date":"02d24d14 20:44","Description":"Tisch Library Copiers","Amount":-0.1,"Balance":71.78},
+{"Date":"02d24d14 20:53","Description":"Tisch Library Copiers","Amount":-10.1,"Balance":61.68},
+{"Date":"02d25d14 16:11","Description":"Commons Deli & Grill POS","Amount":-4.25,"Balance":57.43},
+{"Date":"02d25d14 23:56","Description":"Tisch Library Printers","Amount":-2.4,"Balance":55.03},
+{"Date":"02d26d14 0:06","Description":"Tisch Library Printers","Amount":-1.5,"Balance":53.53},
+{"Date":"02d26d14 0:08","Description":"Tisch Library Printers","Amount":-0.1,"Balance":53.43},
+{"Date":"02d26d14 0:12","Description":"Tisch Library Printers","Amount":-0.4,"Balance":53.03},
+{"Date":"02d26d14 0:13","Description":"Tisch Library Printers","Amount":-1.6,"Balance":51.43},
+{"Date":"02d26d14 8:47","Description":"Tisch Library Printers","Amount":-0.3,"Balance":51.13},
+{"Date":"02d27d14 13:22","Description":"Ginn Library Printers","Amount":-0.6,"Balance":50.53},
+{"Date":"03d03d14 11:55","Description":"Mugar Cafe POS","Amount":-4.84,"Balance":45.69},
+{"Date":"03d03d14 17:55","Description":"Commons Deli & Grill POS","Amount":-9.15,"Balance":36.54},
+{"Date":"03d05d14 12:11","Description":"Commons Deli & Grill POS","Amount":-11.3,"Balance":25.24},
+{"Date":"03d05d14 14:23","Description":"Tower Cafe POS","Amount":-1.45,"Balance":23.79},
+{"Date":"03d06d14 13:27","Description":"Tisch Library Copiers","Amount":-0.15,"Balance":23.64},
+{"Date":"03d09d14 11:57","Description":"Commons Deli & Grill POS","Amount":-7.4,"Balance":16.24},
+{"Date":"03d10d14 11:53","Description":"Commons Deli & Grill POS","Amount":-7.09,"Balance":9.15},
+{"Date":"03d11d14 13:22","Description":"Tisch Library Copiers","Amount":-2.4,"Balance":6.75},
+{"Date":"03d25d14 13:28","Description":"Tisch Library Copiers","Amount":-0.4,"Balance":6.35},
+{"Date":"03d27d14 13:25","Description":"Tisch Library Printers","Amount":-0.3,"Balance":6.05},
+{"Date":"04d03d14 4:01","Description":"Adjustment - Deposit","Amount":50,"Balance":56.05},
+{"Date":"04d03d14 13:24","Description":"Tisch Library Copiers","Amount":-3.3,"Balance":52.75},
+{"Date":"04d03d14 13:24","Description":"Tisch Library Copiers","Amount":-1.5,"Balance":51.25},
+{"Date":"11/1/14 14:04","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":90},
+{"Date":"11/3/14 20:09","Description":"Carmichael Hall Dining","Amount":-1,"Balance":89},
+{"Date":"11/4/14 12:46","Description":"Carmichael Hall Dining","Amount":-1,"Balance":88},
+{"Date":"11/4/14 18:18","Description":"Carmichael Hall Dining","Amount":-1,"Balance":87},
+{"Date":"11/5/14 17:48","Description":"Carmichael Hall Dining","Amount":-1,"Balance":86},
+{"Date":"11/6/14 12:10","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":85},
+{"Date":"11/6/14 14:56","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":84},
+{"Date":"11/6/14 18:30","Description":"Carmichael Hall Dining","Amount":-1,"Balance":83},
+{"Date":"11/7/14 12:37","Description":"Carmichael Hall Dining","Amount":-1,"Balance":82},
+{"Date":"11/7/14 17:39","Description":"Carmichael Hall Dining","Amount":-1,"Balance":81},
+{"Date":"11/8/14 12:35","Description":"Carmichael Hall Dining","Amount":-1,"Balance":80},
+{"Date":"11/9/14 18:04","Description":"Carmichael Hall Dining","Amount":-1,"Balance":79},
+{"Date":"11/10/14 10:36","Description":"Carmichael Hall Dining","Amount":-1,"Balance":78},
+{"Date":"11/10/14 14:38","Description":"Carmichael Hall Dining","Amount":-1,"Balance":77},
+{"Date":"11/11/14 13:56","Description":"Carmichael Hall Dining","Amount":-1,"Balance":76},
+{"Date":"11/11/14 18:19","Description":"Carmichael Hall Dining","Amount":-1,"Balance":75},
+{"Date":"11/12/14 11:56","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":74},
+{"Date":"11/12/14 19:01","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":73},
+{"Date":"11/13/14 17:22","Description":"Carmichael Hall Dining","Amount":-1,"Balance":72},
+{"Date":"11/14/14 12:42","Description":"Carmichael Hall Dining","Amount":-1,"Balance":71},
+{"Date":"11/14/14 17:07","Description":"Carmichael Hall Dining","Amount":-1,"Balance":70},
+{"Date":"11/15/14 17:30","Description":"Carmichael Hall Dining","Amount":-1,"Balance":69},
+{"Date":"11/16/14 13:07","Description":"Carmichael Hall Dining","Amount":-1,"Balance":68},
+{"Date":"11/16/14 18:19","Description":"Carmichael Hall Dining","Amount":-1,"Balance":67},
+{"Date":"11/17/14 11:07","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":66},
+{"Date":"11/17/14 11:07","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":65},
+{"Date":"11/17/14 17:39","Description":"Carmichael Hall Dining","Amount":-1,"Balance":64},
+{"Date":"11/18/14 12:04","Description":"Carmichael Hall Dining","Amount":-1,"Balance":63},
+{"Date":"11/18/14 17:40","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":62},
+{"Date":"11/19/14 12:16","Description":"Carmichael Hall Dining","Amount":-1,"Balance":61},
+{"Date":"11/19/14 17:22","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":60},
+{"Date":"11/20/14 15:06","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":59},
+{"Date":"11/20/14 17:23","Description":"Carmichael Hall Dining","Amount":-1,"Balance":58},
+{"Date":"11/21/14 17:01","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":57},
+{"Date":"11/21/14 18:00","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":56},
+{"Date":"11/22/14 12:00","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":55},
+{"Date":"11/22/14 12:00","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":54},
+{"Date":"11/23/14 13:47","Description":"Carmichael Hall Dining","Amount":-1,"Balance":53},
+{"Date":"11/23/14 17:45","Description":"Carmichael Hall Dining","Amount":-1,"Balance":52},
+{"Date":"11/24/14 11:10","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":51},
+{"Date":"11/24/14 17:43","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":50},
+{"Date":"11/24/14 20:32","Description":"Carmichael Hall Dining","Amount":-1,"Balance":49},
+{"Date":"11/25/14 12:42","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":48},
+{"Date":"11/25/14 14:55","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":47},
+{"Date":"11/25/14 17:29","Description":"Carmichael Hall Dining","Amount":-1,"Balance":46},
+{"Date":"11/25/14 18:29","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":45},
+{"Date":"11/26/14 12:07","Description":"Carmichael Hall Dining","Amount":-1,"Balance":44},
+{"Date":"11/26/14 17:21","Description":"Carmichael Hall Dining","Amount":-1,"Balance":43},
+{"Date":"12/2/14 12:22","Description":"Carmichael Hall Dining","Amount":-1,"Balance":42},
+{"Date":"12/2/14 14:57","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":41},
+{"Date":"12/2/14 17:55","Description":"Carmichael Hall Dining","Amount":-1,"Balance":40},
+{"Date":"12/3/14 17:55","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":39},
+{"Date":"12/3/14 18:55","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":38},
+{"Date":"12/4/14 12:18","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":37},
+{"Date":"12/4/14 17:26","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":36},
+{"Date":"12/5/14 16:54","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":35},
+{"Date":"12/5/14 17:09","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":34},
+{"Date":"12/6/14 14:26","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":33},
+{"Date":"12/7/14 11:32","Description":"Carmichael Hall Dining","Amount":-1,"Balance":32},
+{"Date":"12/7/14 17:43","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":31},
+{"Date":"12/7/14 17:43","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":30},
+{"Date":"12/8/14 12:18","Description":"Carmichael Hall Dining","Amount":-1,"Balance":29},
+{"Date":"12/8/14 17:46","Description":"Carmichael Hall Dining","Amount":-1,"Balance":28},
+{"Date":"12/9/14 12:52","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":27},
+{"Date":"12/9/14 17:16","Description":"Carmichael Hall Dining","Amount":-1,"Balance":26},
+{"Date":"12/9/14 19:23","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":25},
+{"Date":"12/10/14 13:26","Description":"Carmichael Hall Dining","Amount":-1,"Balance":24},
+{"Date":"12/10/14 17:35","Description":"Carmichael Hall Dining","Amount":-1,"Balance":23},
+{"Date":"12/10/14 18:20","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":22},
+{"Date":"12/11/14 13:58","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":21},
+{"Date":"12/11/14 14:31","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":20},
+{"Date":"12/11/14 17:01","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":19},
+{"Date":"12/11/14 17:02","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":18},
+{"Date":"12/12/14 11:16","Description":"Carmichael Hall Dining","Amount":-1,"Balance":17},
+{"Date":"12/12/14 13:43","Description":"Carmichael Hall Dining","Amount":-1,"Balance":16},
+{"Date":"12/12/14 17:26","Description":"Carmichael Hall Dining","Amount":-1,"Balance":15},
+{"Date":"12/14/14 14:08","Description":"Carmichael Hall Dining","Amount":-1,"Balance":14},
+{"Date":"12/14/14 14:08","Description":"Carmichael Hall Dining","Amount":-1,"Balance":13},
+{"Date":"1/10/14 23:36","Description":"Adjustment - Withdrawl","Amount":-13,"Balance":0},
+{"Date":"1/13/14 16:45","Description":"Adjustment - Reset","Amount":160,"Balance":160},
+{"Date":"1/14/14 12:30","Description":"Carmichael Hall Dining","Amount":-1,"Balance":159},
+{"Date":"1/15/14 12:52","Description":"Carmichael Hall Dining","Amount":-1,"Balance":158},
+{"Date":"1/15/14 17:54","Description":"Carmichael Hall Dining","Amount":-1,"Balance":157},
+{"Date":"1/16/14 17:17","Description":"Carmichael Hall Dining","Amount":-1,"Balance":156},
+{"Date":"1/17/14 13:57","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":155},
+{"Date":"1/17/14 18:02","Description":"Carmichael Hall Dining","Amount":-1,"Balance":154},
+{"Date":"1/18/14 13:33","Description":"Carmichael Hall Dining","Amount":-1,"Balance":153},
+{"Date":"1/18/14 18:05","Description":"Carmichael Hall Dining","Amount":-1,"Balance":152},
+{"Date":"1/20/14 12:13","Description":"Carmichael Hall Dining","Amount":-1,"Balance":151},
+{"Date":"1/21/14 12:19","Description":"Carmichael Hall Dining","Amount":-1,"Balance":150},
+{"Date":"1/21/14 18:16","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":149},
+{"Date":"1/22/14 12:08","Description":"Carmichael Hall Dining","Amount":-1,"Balance":148},
+{"Date":"1/24/14 12:49","Description":"Carmichael Hall Dining","Amount":-1,"Balance":147},
+{"Date":"1/25/14 14:38","Description":"Carmichael Hall Dining","Amount":-1,"Balance":146},
+{"Date":"1/26/14 14:19","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":145},
+{"Date":"1/27/14 17:51","Description":"Carmichael Hall Dining","Amount":-1,"Balance":144},
+{"Date":"1/28/14 18:14","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":143},
+{"Date":"1/29/14 13:35","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":142},
+{"Date":"1/29/14 18:27","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":141},
+{"Date":"1/30/14 18:23","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":140},
+{"Date":"1/31/14 12:04","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":139},
+{"Date":"1/31/14 16:45","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":138},
+{"Date":"2/1/14 17:56","Description":"Carmichael Hall Dining","Amount":-1,"Balance":137},
+{"Date":"2/2/14 13:20","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":136},
+{"Date":"2/3/14 17:01","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":135},
+{"Date":"2/3/14 17:45","Description":"Carmichael Hall Dining","Amount":-1,"Balance":134},
+{"Date":"2/4/14 12:02","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":133},
+{"Date":"2/4/14 17:33","Description":"Carmichael Hall Dining","Amount":-1,"Balance":132},
+{"Date":"2/5/14 18:28","Description":"Carmichael Hall Dining","Amount":-1,"Balance":131},
+{"Date":"2/6/14 12:08","Description":"Carmichael Hall Dining","Amount":-1,"Balance":130},
+{"Date":"2/6/14 12:40","Description":"Carmichael Hall Dining","Amount":-1,"Balance":129},
+{"Date":"2/6/14 17:46","Description":"Carmichael Hall Dining","Amount":-1,"Balance":128},
+{"Date":"2/8/14 12:15","Description":"Carmichael Hall Dining","Amount":-1,"Balance":127},
+{"Date":"2/9/14 12:40","Description":"Carmichael Hall Dining","Amount":-1,"Balance":126},
+{"Date":"2/9/14 17:51","Description":"Carmichael Hall Dining","Amount":-1,"Balance":125},
+{"Date":"2/10/14 16:27","Description":"Carmichael Hall Dining","Amount":-1,"Balance":124},
+{"Date":"2/11/14 12:06","Description":"Carmichael Hall Dining","Amount":-1,"Balance":123},
+{"Date":"2/11/14 19:17","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":122},
+{"Date":"2/12/14 11:50","Description":"Carmichael Hall Dining","Amount":-1,"Balance":121},
+{"Date":"2/12/14 18:22","Description":"Carmichael Hall Dining","Amount":-1,"Balance":120},
+{"Date":"2/13/14 11:57","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":119},
+{"Date":"2/13/14 17:22","Description":"Carmichael Hall Dining","Amount":-1,"Balance":118},
+{"Date":"2/14/14 13:04","Description":"Carmichael Hall Dining","Amount":-1,"Balance":117},
+{"Date":"2/14/14 18:16","Description":"Carmichael Hall Dining","Amount":-1,"Balance":116},
+{"Date":"2/15/14 11:46","Description":"Carmichael Hall Dining","Amount":-1,"Balance":115},
+{"Date":"2/16/14 17:19","Description":"Carmichael Hall Dining","Amount":-1,"Balance":114},
+{"Date":"2/18/14 12:31","Description":"Carmichael Hall Dining","Amount":-1,"Balance":113},
+{"Date":"2/18/14 17:11","Description":"Carmichael Hall Dining","Amount":-1,"Balance":112},
+{"Date":"2/19/14 18:16","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":111},
+{"Date":"2/19/14 21:52","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":110},
+{"Date":"2/20/14 17:42","Description":"Carmichael Hall Dining","Amount":-1,"Balance":109},
+{"Date":"2/20/14 17:42","Description":"Carmichael Hall Dining","Amount":-1,"Balance":108},
+{"Date":"2/21/14 12:46","Description":"Carmichael Hall Dining","Amount":-1,"Balance":107},
+{"Date":"2/24/14 13:23","Description":"Carmichael Hall Dining","Amount":-1,"Balance":106},
+{"Date":"2/24/14 17:26","Description":"Carmichael Hall Dining","Amount":-1,"Balance":105},
+{"Date":"2/25/14 17:57","Description":"Carmichael Hall Dining","Amount":-1,"Balance":104},
+{"Date":"2/26/14 17:16","Description":"Carmichael Hall Dining","Amount":-1,"Balance":103},
+{"Date":"2/27/14 12:04","Description":"Carmichael Hall Dining","Amount":-1,"Balance":102},
+{"Date":"2/27/14 19:01","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":101},
+{"Date":"2/28/14 17:01","Description":"Carmichael Hall Dining","Amount":-1,"Balance":100},
+{"Date":"3/1/14 11:09","Description":"Carmichael Hall Dining","Amount":-1,"Balance":99},
+{"Date":"3/1/14 17:48","Description":"Carmichael Hall Dining","Amount":-1,"Balance":98},
+{"Date":"3/2/14 13:03","Description":"Carmichael Hall Dining","Amount":-1,"Balance":97},
+{"Date":"3/2/14 17:36","Description":"Carmichael Hall Dining","Amount":-1,"Balance":96},
+{"Date":"3/3/14 17:34","Description":"Carmichael Hall Dining","Amount":-1,"Balance":95},
+{"Date":"3/4/14 12:02","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":94},
+{"Date":"3/4/14 17:36","Description":"Carmichael Hall Dining","Amount":-1,"Balance":93},
+{"Date":"3/6/14 18:11","Description":"Carmichael Hall Dining","Amount":-1,"Balance":92},
+{"Date":"3/6/14 18:22","Description":"Carmichael Hall Dining","Amount":-1,"Balance":91},
+{"Date":"3/6/14 20:16","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":90},
+{"Date":"3/8/14 19:24","Description":"Carmichael Hall Dining","Amount":-1,"Balance":89},
+{"Date":"3/9/14 12:24","Description":"Carmichael Hall Dining","Amount":-1,"Balance":88},
+{"Date":"3/10/14 17:33","Description":"Carmichael Hall Dining","Amount":-1,"Balance":87},
+{"Date":"3/11/14 12:00","Description":"Carmichael Hall Dining","Amount":-1,"Balance":86},
+{"Date":"3/11/14 17:26","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":85},
+{"Date":"3/13/14 12:23","Description":"Carmichael Hall Dining","Amount":-1,"Balance":84},
+{"Date":"3/13/14 19:47","Description":"Carmichael Hall Dining","Amount":-1,"Balance":83},
+{"Date":"3/14/14 18:32","Description":"Carmichael Hall Dining","Amount":-1,"Balance":82},
+{"Date":"3/23/14 17:58","Description":"Carmichael Hall Dining","Amount":-1,"Balance":81},
+{"Date":"3/23/14 17:58","Description":"Carmichael Hall Dining","Amount":-1,"Balance":80},
+{"Date":"3/24/14 17:26","Description":"Carmichael Hall Dining","Amount":-1,"Balance":79},
+{"Date":"3/24/14 17:26","Description":"Carmichael Hall Dining","Amount":-1,"Balance":78},
+{"Date":"3/25/14 12:54","Description":"Carmichael Hall Dining","Amount":-1,"Balance":77},
+{"Date":"3/25/14 12:54","Description":"Carmichael Hall Dining","Amount":-1,"Balance":76},
+{"Date":"3/25/14 17:34","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":75},
+{"Date":"3/26/14 17:34","Description":"Carmichael Hall Dining","Amount":-1,"Balance":74},
+{"Date":"3/27/14 11:57","Description":"Carmichael Hall Dining","Amount":-1,"Balance":73},
+{"Date":"3/28/14 14:04","Description":"Carmichael Hall Dining","Amount":-1,"Balance":72},
+{"Date":"3/28/14 19:51","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":71},
+{"Date":"3/29/14 13:02","Description":"Carmichael Hall Dining","Amount":-1,"Balance":70},
+{"Date":"3/29/14 17:51","Description":"Carmichael Hall Dining","Amount":-1,"Balance":69},
+{"Date":"3/30/14 12:51","Description":"Carmichael Hall Dining","Amount":-1,"Balance":68},
+{"Date":"3/30/14 18:29","Description":"Carmichael Hall Dining","Amount":-1,"Balance":67},
+{"Date":"3/31/14 13:38","Description":"Carmichael Hall Dining","Amount":-1,"Balance":66},
+{"Date":"3/31/14 17:56","Description":"Carmichael Hall Dining","Amount":-1,"Balance":65},
+{"Date":"4/1/14 16:23","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":64},
+{"Date":"4/1/14 17:11","Description":"Carmichael Hall Dining","Amount":-1,"Balance":63},
+{"Date":"4/2/14 12:15","Description":"Carmichael Hall Dining","Amount":-1,"Balance":62},
+{"Date":"4/2/14 21:18","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":61},
+{"Date":"4/3/14 12:46","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":60},
+{"Date":"4/3/14 17:35","Description":"Carmichael Hall Dining","Amount":-1,"Balance":59},
+{"Date":"4/4/14 22:48","Description":"Commons Deli & Grill POS","Amount":-1,"Balance":58},
+{"Date":"4/5/14 17:25","Description":"Carmichael Hall Dining","Amount":-1,"Balance":57},
+{"Date":"4/7/14 16:50","Description":"Carmichael Hall Dining","Amount":-1,"Balance":56},
+{"Date":"4/8/14 17:58","Description":"Carmichael Hall Dining","Amount":-1,"Balance":55},
+{"Date":"4/9/14 18:13","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":54},
+{"Date":"4/10/14 11:58","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":53},
+{"Date":"4/11/14 13:00","Description":"Carmichael Hall Dining","Amount":-1,"Balance":52},
+{"Date":"4/11/14 15:41","Description":"Hodgdon Good-To-Go","Amount":-1,"Balance":51},
+{"Date":"4/12/14 12:56","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":50},
+{"Date":"4/12/14 19:19","Description":"Carmichael Hall Dining","Amount":-1,"Balance":49},
+{"Date":"4/12/14 23:37","Description":"Commons Deli & Grill POS","Amount":-1,"Balance":48},
+{"Date":"4/13/14 17:56","Description":"Dewick/MacPhie Dining","Amount":-1,"Balance":47},
+{"Date":"4/14/14 16:53","Description":"Adjustment - Withdrawl","Amount":-1,"Balance":46},
+{"Date":"4/14/14 17:35","Description":"Carmichael Hall Dining","Amount":-1,"Balance":45},
+{"Date":"4/15/14 12:26","Description":"Carmichael Hall Dining","Amount":-1,"Balance":44},
+{"Date":"4/15/14 17:35","Description":"Carmichael Hall Dining","Amount":-1,"Balance":43},
+{"Date":"4/16/14 17:00","Description":"Carmichael Rdr Trans","Amount":-1,"Balance":42}]
+
+var ginn = 0;
+var tisch = 0;
+var eaton = 0;
+
+data = JSONdata;
+for (i = 0; i < data.length; i++) {
+    if (data[i]['Description'] == 'Ginn Library Printers') {
+        ginn = ginn + Math.abs(data[i]['Amount']);
+    }
+    if (data[i]['Description'] == 'Tisch Library Printers' || data[i]['Description'] == 'Tisch Library Copiers') {
+        tisch = tisch + Math.abs(data[i]['Amount']);
+    }
+    if (data[i]['Description'] == 'Eaton Printers') {
+        eaton = eaton + Math.abs(data[i]['Amount']);
+    }
+}
+
+var print_pieData = [
+        {value: tisch, color:"#F38630"},
+        {value : ginn, color : "#5AD75A"},
+        {value : eaton, color : "#69D2E7"}
+    ];
+
+var myPie = new Chart(document.getElementById("print_pie").getContext("2d")).Pie(print_pieData);
+
+function makePLegendColor(id, color) {
+    var pcanvas = document.getElementById(id);
+    var legcont = pcanvas.getContext('2d');
+    legcont.beginPath();
+    legcont.rect(1, 1, 30, 15);
+        legcont.fillStyle = color;
+    legcont.fill();
+};
+
+makePLegendColor('plegend1', '#F38630');
+makePLegendColor('plegend2', '#5AD75A');
+makePLegendColor('plegend3', '#69D2E7');
+
+
+var ginn2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+var tisch2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+var eaton2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+data = JSONdata;
+
+for (i = 0; i < data.length; i++) {
+    var date = data[i]['Date'];
+    var month;
+    if (date.search('d') != -1){
+        month = date.split('d') - 1;
+    }
+    else {
+        month = date.split('/') - 1;
+    }
+    if (data[i]['Description'] == 'Ginn Library Printers') {
+        ginn2[month - 1] = ginn2[month - 1] + Math.abs(data[i]['Amount']);
+    }
+    if (data[i]['Description'] == 'Tisch Library Printers' || data[i]['Description'] == 'Tisch Library Copiers') {
+        tisch2[month - 1] = tisch2[month - 1] + Math.abs(data[i]['Amount']);
+    }
+    if (data[i]['Description'] == 'Eaton Printers') {
+        eaton2[month - 1] = eaton2[month - 1] + Math.abs(data[i]['Amount']);
+    }
+}
+
+var date1 = data[data.length - 1]['Date'];
+var month1 = date1.split('d') - 1;
+var m2inc  = [];
+m2inc.unshift(month1);
+for (i = 0; i < 5; i++) {
+    if (month1 > 0) {
+        m2inc.unshift(month1 -1);
+        month1--;
+    }
+    else {
+        month1 = month1 + 11;
+        m2inc.unshift(month1);
+    }
+}
+
+var barChartData = {
+    labels : [m2inc[0]+1, m2inc[1]+1, m2inc[2]+1, m2inc[3]+1, m2inc[4]+1, m2inc[5]+1],
+    datasets : [
+        {
+            fillColor : "#F38630",
+            strokeColor : "#F38630",
+            data : [tisch2[m2inc[0]], tisch2[m2inc[1]], tisch2[m2inc[2]], tisch2[m2inc[3]], tisch2[m2inc[4]], tisch2[m2inc[5]]]
+        },
+        {
+            fillColor : "#5AD75A",
+            strokeColor : "#5AD75A",
+            data : [ginn2[m2inc[0]], ginn2[m2inc[1]], ginn2[m2inc[2]], ginn2[m2inc[3]], ginn2[m2inc[4]], ginn2[m2inc[5]]]
+        },
+        {
+            fillColor : "#69D2E7",
+            strokeColor : "#69D2E7",
+            data : [eaton2[m2inc[0]], eaton2[m2inc[1]], eaton2[m2inc[2]], eaton2[m2inc[3]], eaton2[m2inc[4]], eaton2[m2inc[5]]]
+        }
+    ]
+}
+
+var myLine = new Chart(document.getElementById("print_bar").getContext("2d")).Bar(barChartData);
+
+
+// Google maps
+var infowindow = new google.maps.InfoWindow();
+var myLat = 0;
+var myLng = 0;
+
+function initialize() {
+    var print_canvas = document.getElementById('print_canvas');
+    var mapOptions = {
+            center: new google.maps.LatLng(42.406800, -71.119637),
+            zoom: 16,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+    }
+    var map = new google.maps.Map(print_canvas, mapOptions);
+
+    var posGinn = new google.maps.LatLng(42.408036, -71.121552);
+    var Ginn = new google.maps.Marker({
+            position: posGinn,
+            map: map,
+            title: 'Ginn'
+        });
+
+    var posEaton = new google.maps.LatLng(42.406838, -71.118488);
+    var Eaton = new google.maps.Marker({
+            position: posEaton,
+            map: map,
+            title: 'Eaton'
+        });
+
+        var posTisch = new google.maps.LatLng(42.406343, -71.118713);
+    var Tisch = new google.maps.Marker({
+            position: posTisch,
+            map: map,
+            title: 'Tisch'
+        });
+
+
+    google.maps.event.addListener(Tisch, 'click', function() {
+        infowindow.setContent('Tisch'); 
+        infowindow.open(map, this);
+    });
+
+    google.maps.event.addListener(Ginn, 'click', function() {
+        infowindow.setContent('Ginn'); 
+        infowindow.open(map, this);
+    });
+
+    google.maps.event.addListener(Eaton, 'click', function() {
+        infowindow.setContent('Eaton'); 
+        infowindow.open(map, this);
+    });
+
+
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            myLat = position.coords.latitude;
+            myLng = position.coords.longitude;
+        });
+        var posMe = new google.maps.LatLng(myLat, myLng);
+        var me = new google.maps.Marker({
+            position: posMe,
+            map: map,
+            title: 'My Location'
+        });
+        google.maps.event.addListener(me, 'click', function() {
+            infowindow.setContent('My location');
+            infowindow.open(map, this);
+        });
+    }
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+
+
+printer_CONST = 50;
+page_CONST = 200;
+ink_CONST = 13;
+ream_CONST = 500;
+reamcost_CONST = 8;
+pricePPage_CONST = .1;
+DAYS_CONST = 112;
+
+function initPrint()
+{
+    print();
+}
+
+function print()
+{
+    var moneySpentSem = totalPrintCost;
+    var moneySpent = moneySpentSem * 8;
+    var pagesSem = moneySpent/pricePPage_CONST;
+    var pages = pagesSem * 8;
+    var numCartridges = Math.ceil(pages/page_CONST);
+    var numReams = Math.ceil(pages/ream_CONST);
+    var addlPages = 367 - pagesSem;
+
+    var printerPrice = printer_CONST + numCartridges * ink_CONST + numReams * ream_CONST;
+ console.log("printer price");
+ console.log(printerPrice);
+    if (printerPrice < moneySpent){
+        var output2 = document.getElementById("message2");
+        output.innerHTML = "It would be more cost efficent for you to buy a printer!!";
+
+        var output3 = document.getElementById("message3");
+        output1.innerHTML = "Per semester, you print " + pages + " pages, for a total of $" + moneySpentSem + ". Check out our links to affordable printers to start saving today!"; 
+
+    }
+    else if (printerPrice == moneySpent){
+        var output2 = document.getElementById("message2");
+        output.innerHTML = "It would cost the same for you to print on campus or to purchase your own printer.";
+
+        var output3 = document.getElementById("message3");
+        output1.innerHTML = "Per semester, you print " + pages + " pages, for a total of $" + moneySpentSem + ". If you anticipate increased future printer use, check out our links to affordable printers for your convenience or to start saving!";
+    }
+    else{
+        var output2 = document.getElementById("message2");
+        output.innerHTML = "It would be more cost efficient for you to print on campus than it would be to purchase your own printer.";
+
+        var output3 = document.getElementById("message3");
+        output1.innerHTML = "Per semester, you print " + pages + " pages, for a total of $" + moneySpentSem + ". For purchasing a printer to be cost efficient, you would need to print " +  addlPages + "each semester.";
+    }
+}
+
+//scale months function
+function scaleMonths()
+{
+    var numDays = 0;
+
+    for (var i = 0; results.length-1; i++){
+        var strDate = parsed["Date"];
+        var dateParts = strDate.split(" ");
+        var date = dateParts[0];
+        var monthPart;
+        var month;
+        var day;
+
+        if (date.search("d") != -1){
+            monthPart = date.split("d");
+        }
+        else{
+            monthPart = date.split("/");
+        }
+
+        month = monthPart[0];
+        day = monthPart[1];
+
+        if (!((month == 12 && day >= 20) && (month == 01 && day <= 13) && 
+               (month == 03 && day >= 15 && day <= 23) && (month == 05 && day >=11) && 
+               (month == 06) && (month == 07) && (month == 08 && day <= 26) && 
+               (month == 11 && day >= 26 && day <= 29))){
+            numDays++;
+        }
+    }
+
+    var scale = DAYS_CONST/numDays;
+    return scale;
+}
+</script>
+</body>
+</html>
